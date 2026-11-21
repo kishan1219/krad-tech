@@ -84,7 +84,10 @@ const workerScript = `export default {
 
 fs.writeFileSync(path.join(distDir, '_worker.js'), workerScript, 'utf-8');
 
-// 6. Delete internal compiler cache to minimize repository footprint
+// 6. Write .assetsignore so Cloudflare Wrangler does not upload _worker.js as a public asset
+fs.writeFileSync(path.join(distDir, '.assetsignore'), '_worker.js\n', 'utf-8');
+
+// 7. Delete internal compiler cache to minimize repository footprint
 const cacheDir = path.join(rootDir, '.next', 'cache');
 if (fs.existsSync(cacheDir)) {
   try {
