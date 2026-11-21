@@ -6,7 +6,7 @@ const cspHeader = `
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' blob: data: https:;
   font-src 'self' https://fonts.gstatic.com data:;
-  connect-src 'self' https://uqnwxrbyjofxegheosji.supabase.co https://*.supabase.co wss://*.supabase.co;
+  connect-src 'self' https://*.supabase.co wss://*.supabase.co;
   frame-ancestors 'none';
   object-src 'none';
   base-uri 'self';

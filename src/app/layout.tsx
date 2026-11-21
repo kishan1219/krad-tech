@@ -5,8 +5,10 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import WhatsAppPill from '@/components/layout/WhatsAppPill';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://krad-tech.onrender.com';
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kradtechnology.com'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'KRAD Technology | Engineering Digital Experiences. Building What\'s Next.',
     template: '%s | KRAD Technology',
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://kradtechnology.com',
+    url: siteUrl,
     siteName: 'KRAD Technology',
     title: 'KRAD Technology | Engineering Digital Experiences. Building What\'s Next.',
     description:
@@ -88,12 +90,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const currentSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://krad-tech.onrender.com';
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'KRAD Technology',
-    url: 'https://kradtechnology.com',
-    logo: 'https://kradtechnology.com/brand/logo.svg',
+    url: currentSiteUrl,
+    logo: `${currentSiteUrl}/brand/logo.svg`,
     description:
       'Full-service technology company delivering web applications, mobile applications, AI solutions, custom software, and digital production services.',
     telephone: '+919111021438',

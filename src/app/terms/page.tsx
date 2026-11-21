@@ -25,7 +25,7 @@ export default function TermsPage() {
           <section className="space-y-2">
             <h2 className="text-base font-bold text-white">1. Agreement to Terms</h2>
             <p>
-              By accessing the website of KRAD Technology (<a href="https://kradtechnology.com" className="text-[#00D2FE] underline">kradtechnology.com</a>) or contracting our engineering and design services, you agree to be bound by these Terms and Conditions. Individual commercial engagements are governed by formal Master Services Agreements (MSA) and Statements of Work (SOW).
+              By accessing the website of KRAD Technology (<a href="https://krad-tech.onrender.com" className="text-[#00D2FE] underline">krad-tech.onrender.com</a>) or contracting our engineering and design services, you agree to be bound by these Terms and Conditions. Individual commercial engagements are governed by formal Master Services Agreements (MSA) and Statements of Work (SOW).
             </p>
           </section>
 
