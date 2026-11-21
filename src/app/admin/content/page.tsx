@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminNav from '../AdminNav';
 import { SUPPORTED_LOCALES } from '@/lib/constants';
-import { Save, CheckCircle2, AlertCircle, Loader2, Globe, Sparkles } from 'lucide-react';
+import { Save, CheckCircle2, AlertCircle, Loader2, Globe } from 'lucide-react';
 
 export default function AdminContentPage() {
   const [selectedLocale, setSelectedLocale] = useState('en');
@@ -91,9 +91,8 @@ export default function AdminContentPage() {
 
         {/* Header */}
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-white">
             <span>Live Content & Translations CMS</span>
-            <Sparkles className="w-5 h-5 text-[#00D2FE]" />
           </h2>
           <p className="text-xs text-slate-400">
             Edit website copy, contact information, and localized translations in real-time. Changes are stored in Supabase and take effect immediately.

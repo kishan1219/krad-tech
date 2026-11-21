@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { COMPANY_DEFAULTS } from '@/lib/constants';
-import { ArrowUpRight, Phone, MessageCircle, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Phone, MessageCircle } from 'lucide-react';
 
 export default function CtaBanner() {
   const { getOverride } = useLanguage();
@@ -22,7 +22,6 @@ export default function CtaBanner() {
 
           <div className="max-w-3xl mx-auto space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00D2FE]/10 border border-[#00D2FE]/25 text-[#00D2FE] text-xs font-mono">
-              <Sparkles className="w-3.5 h-3.5" />
               <span>Ready for Immediate Deployment</span>
             </div>
 

@@ -240,7 +240,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     title: 'Animation & VFX',
     tagline: '2D/3D motion graphics, CGI simulations, and visual effects.',
     description: 'Immersive visual storytelling through 3D product animations, particle physics, green screen compositing, and dynamic logo reveals.',
-    iconName: 'Sparkles',
+    iconName: '',
     subcategories: [
       {
         title: '3D Creation & Simulation',

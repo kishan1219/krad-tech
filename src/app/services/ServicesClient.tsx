@@ -11,7 +11,6 @@ import {
   Layers,
   Palette,
   Video,
-  Sparkles,
   PenTool,
   Layout,
   TabletSmartphone,
@@ -33,7 +32,6 @@ export default function ServicesClient() {
     Layers: <Layers className="w-6 h-6 text-[#A78BFA]" />,
     Palette: <Palette className="w-6 h-6 text-[#00D2FE]" />,
     Video: <Video className="w-6 h-6 text-[#38BDF8]" />,
-    Sparkles: <Sparkles className="w-6 h-6 text-[#818CF8]" />,
     PenTool: <PenTool className="w-6 h-6 text-[#A78BFA]" />,
     Layout: <Layout className="w-6 h-6 text-[#00D2FE]" />,
     TabletSmartphone: <TabletSmartphone className="w-6 h-6 text-[#38BDF8]" />,
@@ -115,9 +113,11 @@ export default function ServicesClient() {
               {/* Category Header */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-border-subtle">
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-[#0A0F1D] border border-border-subtle flex items-center justify-center shrink-0">
-                    {iconMap[service.iconName]}
-                  </div>
+                  {iconMap[service.iconName] && (
+                    <div className="w-14 h-14 rounded-2xl bg-[#0A0F1D] border border-border-subtle flex items-center justify-center shrink-0">
+                      {iconMap[service.iconName]}
+                    </div>
+                  )}
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-[11px] font-mono text-[#00D2FE] font-bold">

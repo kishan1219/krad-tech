@@ -1,18 +1,32 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import { COMPANY_DEFAULTS } from '@/lib/constants';
-import { Phone, Menu, X, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { 
+  Phone, 
+  Menu, 
+  X, 
+  ArrowUpRight, 
+  ShieldCheck, 
+  ChevronDown, 
+  Globe, 
+  Smartphone, 
+  Bot, 
+  Layers 
+} from 'lucide-react';
 
 export default function Navbar() {
   const { t, getOverride } = useLanguage();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const phoneDisplay = getOverride('contact_phone', COMPANY_DEFAULTS.phone);
 
@@ -24,18 +38,66 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile drawer upon route change
+  // Close menus on route change
   useEffect(() => {
     setMobileMenuOpen(false);
+    setServicesDropdownOpen(false);
   }, [pathname]);
 
-  const navLinks = [
+  // Click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setServicesDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleMouseEnterServices = () => {
+    if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+    setServicesDropdownOpen(true);
+  };
+
+  const handleMouseLeaveServices = () => {
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setServicesDropdownOpen(false);
+    }, 150);
+  };
+
+  const serviceCategories = [
+    {
+      title: 'Web Engineering',
+      desc: 'Next.js 15, React SaaS & Real-Time Portals',
+      href: '/services#web-development',
+      icon: <Globe className="w-4 h-4 text-[#00D2FE]" />,
+    },
+    {
+      title: 'Mobile Applications',
+      desc: 'Fluid Flutter & React Native Multiplatform',
+      href: '/services#mobile-development',
+      icon: <Smartphone className="w-4 h-4 text-[#38BDF8]" />,
+    },
+    {
+      title: 'AI Business Systems',
+      desc: 'WhatsApp Cloud API, RAG & Voice AI',
+      href: '/services#ai-business-solutions',
+      icon: <Bot className="w-4 h-4 text-[#818CF8]" />,
+    },
+    {
+      title: 'Custom Enterprise Software',
+      desc: 'Bespoke ERP, CRM & Microservices',
+      href: '/services#custom-software',
+      icon: <Layers className="w-4 h-4 text-[#A78BFA]" />,
+    },
+  ];
+
+  const primaryNavLinks = [
     { name: t.nav.home, href: '/' },
-    { name: t.nav.services, href: '/services' },
     { name: t.nav.caseStudies, href: '/case-studies' },
     { name: t.nav.about, href: '/about' },
     { name: t.nav.hireResource, href: '/hire-resource' },
-    { name: t.nav.projectRequirements, href: '/project-requirements' },
     { name: t.nav.contact, href: '/contact' },
   ];
 
@@ -43,15 +105,14 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#050814]/90 backdrop-blur-xl border-b border-border-subtle shadow-lg shadow-black/40 py-3.5'
+          ? 'bg-[#050814]/90 backdrop-blur-xl border-b border-border-subtle shadow-lg shadow-black/40 py-3'
           : 'bg-transparent py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 group focus:outline-none">
-            {/* Logo Icon Mark with Cyan Glow */}
+          <Link href="/" className="flex items-center gap-3 group focus:outline-none shrink-0">
             <div className="w-10 h-10 rounded-xl bg-[#0B1120] border border-[#00D2FE]/40 flex items-center justify-center shadow-[0_0_15px_-3px_rgba(0,210,254,0.3)] group-hover:border-[#00D2FE] group-hover:shadow-cyan-glow transition-all">
               <svg viewBox="0 0 48 48" className="w-7 h-7" fill="none">
                 <polygon points="24,6 40,38 33,38 24,20 15,38 8,38" fill="#F8FAFC" />
@@ -59,7 +120,6 @@ export default function Navbar() {
                 <circle cx="24" cy="25" r="2" fill="#FFFFFF" />
               </svg>
             </div>
-            {/* Logo Text */}
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5 font-bold tracking-tight">
                 <span className="text-xl text-white font-extrabold tracking-wider">KRAD</span>
@@ -73,7 +133,79 @@ export default function Navbar() {
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-            {navLinks.map((link) => {
+            <Link
+              href="/"
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                pathname === '/'
+                  ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold shadow-[inset_0_0_12px_rgba(0,210,254,0.15)]'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              {t.nav.home}
+            </Link>
+
+            {/* Services with Dropdown Menu */}
+            <div 
+              ref={dropdownRef}
+              className="relative"
+              onMouseEnter={handleMouseEnterServices}
+              onMouseLeave={handleMouseLeaveServices}
+            >
+              <Link
+                href="/services"
+                onClick={() => setServicesDropdownOpen(false)}
+                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  pathname.startsWith('/services')
+                    ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold'
+                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>{t.nav.services}</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180 text-[#00D2FE]' : 'text-slate-400'}`} />
+              </Link>
+
+              {/* Mega Flyout Menu */}
+              {servicesDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-80 p-2.5 rounded-2xl bg-[#090D1A]/98 border border-[#00D2FE]/30 backdrop-blur-2xl shadow-2xl shadow-black/80 animate-in fade-in zoom-in-95 duration-150 z-50">
+                  <div className="space-y-1">
+                    {serviceCategories.map((s) => (
+                      <Link
+                        key={s.title}
+                        href={s.href}
+                        onClick={() => setServicesDropdownOpen(false)}
+                        className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/5 transition-colors group"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-[#0B1120] border border-border-subtle group-hover:border-[#00D2FE]/50 flex items-center justify-center shrink-0 transition-colors">
+                          {s.icon}
+                        </div>
+                        <div>
+                          <span className="text-xs font-semibold text-white group-hover:text-[#00D2FE] transition-colors block">
+                            {s.title}
+                          </span>
+                          <span className="text-[10px] text-slate-400 line-clamp-1">
+                            {s.desc}
+                          </span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+
+                  <div className="mt-2 pt-2 border-t border-border-subtle/60 px-2 py-1 flex items-center justify-between text-[11px]">
+                    <Link
+                      href="/services"
+                      onClick={() => setServicesDropdownOpen(false)}
+                      className="text-[#00D2FE] font-medium hover:underline inline-flex items-center gap-1"
+                    >
+                      <span>All Services Overview</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Other Nav Links */}
+            {primaryNavLinks.slice(1).map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
@@ -92,8 +224,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right Action Icons & Buttons */}
-          <div className="hidden sm:flex items-center gap-3">
-            {/* Language Selector */}
+          <div className="hidden sm:flex items-center gap-2.5 xl:gap-3">
             <LanguageSwitcher />
 
             {/* Telephone Direct Call */}
@@ -103,7 +234,7 @@ export default function Navbar() {
               title="Call KRAD Technology"
             >
               <Phone className="w-3.5 h-3.5 text-[#00D2FE]" />
-              <span className="hidden xl:inline-block font-mono">{phoneDisplay}</span>
+              <span className="hidden xl:inline-block font-mono text-[11px]">{phoneDisplay}</span>
             </a>
 
             {/* Start Project CTA Button */}
@@ -134,7 +265,35 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="lg:hidden bg-[#0A0F1D]/98 border-b border-border-subtle backdrop-blur-2xl px-5 pt-4 pb-6 space-y-3 animate-in slide-in-from-top-4 duration-200 shadow-2xl">
           <div className="space-y-1">
-            {navLinks.map((link) => {
+            <Link
+              href="/"
+              className={`block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                pathname === '/' ? 'text-[#00D2FE] bg-[#00D2FE]/15 font-semibold' : 'text-slate-200 hover:bg-white/5'
+              }`}
+            >
+              {t.nav.home}
+            </Link>
+
+            {/* Services in mobile */}
+            <div className="py-1">
+              <span className="px-3 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+                Services
+              </span>
+              <div className="mt-1 space-y-0.5 pl-2 border-l border-[#00D2FE]/20">
+                {serviceCategories.map((s) => (
+                  <Link
+                    key={s.title}
+                    href={s.href}
+                    className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-300 hover:text-[#00D2FE]"
+                  >
+                    {s.icon}
+                    <span>{s.title}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {primaryNavLinks.slice(1).map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link

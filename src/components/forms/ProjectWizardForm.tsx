@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { SERVICE_CATEGORIES, BUDGET_OPTIONS, TIMELINE_OPTIONS } from '@/lib/constants';
-import { CheckCircle2, ArrowRight, ArrowLeft, Loader2, Sparkles, AlertCircle } from 'lucide-react';
+import { CheckCircle2, ArrowRight, ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
 
 export default function ProjectWizardForm() {
   const { t } = useLanguage();
@@ -465,7 +465,6 @@ export default function ProjectWizardForm() {
 
             <div className="p-4 rounded-xl bg-[#050814] border border-border-subtle space-y-2 text-xs text-slate-400">
               <div className="flex items-center gap-2 text-slate-300 font-semibold">
-                <Sparkles className="w-4 h-4 text-[#00D2FE]" />
                 <span>Summary of Your Request:</span>
               </div>
               <p>• {formData.project_title || 'Untitled Project'} ({formData.service_category})</p>

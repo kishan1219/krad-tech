@@ -4,7 +4,6 @@ import {
   ShieldCheck,
   Code2,
   Users2,
-  Sparkles,
   Lock,
   Workflow,
   ArrowUpRight,
@@ -37,9 +36,6 @@ export default function AboutPage() {
         {/* Section 2: Mission & Vision */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="p-8 sm:p-10 rounded-3xl bg-surface-card border border-border-subtle shadow-xl space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-[#0A0F1D] border border-border-subtle flex items-center justify-center text-[#00D2FE]">
-              <Sparkles className="w-6 h-6" />
-            </div>
             <h2 className="text-2xl font-bold text-white">Our Mission</h2>
             <p className="text-sm text-slate-300 leading-relaxed">
               To empower ambitious startups, growing small-and-medium businesses, and enterprise leaders with reliable software engineering, cutting-edge AI automation, and intuitive digital experiences that drive measurable business outcomes.

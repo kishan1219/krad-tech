@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import Hero3DContainer from '../3d/Hero3DContainer';
 import { COMPANY_DEFAULTS } from '@/lib/constants';
-import { ArrowUpRight, Phone, MessageCircle, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, Phone, MessageCircle, CheckCircle2 } from 'lucide-react';
 
 export default function HeroSection() {
   const { t, getOverride } = useLanguage();
@@ -29,12 +29,11 @@ export default function HeroSection() {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Typography & CTAs (7 cols) */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-14 items-center">
+          {/* Left Column: Typography & CTAs (6 cols) */}
+          <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-card border border-[#00D2FE]/30 shadow-sm backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-[#00D2FE]" />
               <span className="text-xs font-mono text-slate-300 tracking-wide font-medium">
                 {t.hero.badge}
               </span>
@@ -110,8 +109,8 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Right Column: 3D Visual Tech Sphere (5 cols) */}
-          <div className="lg:col-span-5 flex items-center justify-center">
+          {/* Right Column: Interactive Engineering Showcase (6 cols) */}
+          <div className="lg:col-span-6 flex items-center justify-center lg:justify-end mt-8 lg:mt-0">
             <Hero3DContainer />
           </div>
         </div>

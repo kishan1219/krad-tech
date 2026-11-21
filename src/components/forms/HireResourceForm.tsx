@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { RESOURCE_ROLES, ENGAGEMENT_MODELS } from '@/lib/constants';
-import { CheckCircle2, Loader2, Sparkles, AlertCircle } from 'lucide-react';
+import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 
 export default function HireResourceForm() {
   const { t } = useLanguage();
@@ -327,7 +327,6 @@ export default function HireResourceForm() {
             </>
           ) : (
             <>
-              <Sparkles className="w-4 h-4" />
               <span>{t.hire.submitHiring}</span>
             </>
           )}
