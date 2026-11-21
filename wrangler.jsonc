@@ -5,9 +5,15 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  "build": {
+    "command": "npm run build"
+  },
+  "assets": {
+    "directory": ".next"
+  },
   "pages_build_output_dir": ".next",
   "vars": {
-    "NODE_VERSION": "20"
+    "NODE_VERSION": "22"
   },
   "observability": {
     "logs": {
@@ -20,9 +26,6 @@
       "enabled": true,
       "head_sampling_rate": 1,
       "persist": true
-    },
-    "issue_detection": {
-      "enabled": true
     }
   }
 }
