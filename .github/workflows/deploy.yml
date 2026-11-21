@@ -50,3 +50,30 @@ jobs:
         run: |
           echo "Triggering Render zero-downtime deployment..."
           curl -X POST -s "${RENDER_DEPLOY_HOOK}" > /dev/null && echo "Deployment successfully triggered on Render!"
+
+  deploy-cloudflare:
+    name: Deploy to Cloudflare
+    needs: validate-and-build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Deploy via Wrangler Action
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+        env:
+          NODE_VERSION: "20"
