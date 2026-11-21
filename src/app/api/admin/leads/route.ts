@@ -6,12 +6,13 @@ import {
   getLeadStats,
   updateLeadStatus,
 } from '@/lib/db';
+import { verifyAdminToken } from '@/lib/auth';
+import { sanitizeString } from '@/lib/sanitize';
 
 function isAuthorized(req: NextRequest): boolean {
   const adminToken = req.cookies.get('krad_admin_token')?.value;
   const authHeader = req.headers.get('authorization')?.replace('Bearer ', '');
-  const validSecret = process.env.ADMIN_SECRET_KEY || 'krad_admin_secure_key_2026';
-  return adminToken === validSecret || authHeader === validSecret;
+  return verifyAdminToken(adminToken) || verifyAdminToken(authHeader);
 }
 
 export async function GET(req: NextRequest) {
@@ -19,28 +20,33 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized access' }, { status: 401 });
   }
 
-  const { searchParams } = new URL(req.url);
-  const type = searchParams.get('type') || 'all';
-  const status = searchParams.get('status') || 'ALL';
+  try {
+    const { searchParams } = new URL(req.url);
+    const type = searchParams.get('type') || 'all';
+    const status = searchParams.get('status') || 'ALL';
 
-  if (type === 'stats') {
-    const stats = await getLeadStats();
-    return NextResponse.json(stats);
+    if (type === 'stats') {
+      const stats = await getLeadStats();
+      return NextResponse.json(stats);
+    }
+
+    const [contacts, hires, projects, stats] = await Promise.all([
+      getContactInquiries(status),
+      getResourceHires(status),
+      getProjectRequirements(status),
+      getLeadStats(),
+    ]);
+
+    return NextResponse.json({
+      contacts,
+      hires,
+      projects,
+      stats,
+    });
+  } catch (err: unknown) {
+    console.error('Leads GET error:', err);
+    return NextResponse.json({ error: 'Failed to retrieve leads' }, { status: 500 });
   }
-
-  const [contacts, hires, projects, stats] = await Promise.all([
-    getContactInquiries(status),
-    getResourceHires(status),
-    getProjectRequirements(status),
-    getLeadStats(),
-  ]);
-
-  return NextResponse.json({
-    contacts,
-    hires,
-    projects,
-    stats,
-  });
 }
 
 export async function PATCH(req: NextRequest) {
@@ -56,9 +62,14 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: 'Missing parameters' }, { status: 400 });
     }
 
-    const updated = await updateLeadStatus(type, id, status, notes);
+    const safeStatus = sanitizeString(status);
+    const safeNotes = notes ? sanitizeString(notes) : undefined;
+
+    const updated = await updateLeadStatus(type, id, safeStatus, safeNotes);
     return NextResponse.json({ success: true, updated });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Failed to update lead' }, { status: 500 });
+  } catch (err: unknown) {
+    console.error('Leads PATCH error:', err);
+    const message = err instanceof Error ? err.message : 'Failed to update lead';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

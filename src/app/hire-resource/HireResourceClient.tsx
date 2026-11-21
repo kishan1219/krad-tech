@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { RESOURCE_ROLES, ENGAGEMENT_MODELS } from '@/lib/constants';
 import HireResourceForm from '@/components/forms/HireResourceForm';
-import { Users2, CheckCircle2, Sparkles, Clock, ShieldCheck } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 export default function HireResourceClient() {
   const { t } = useLanguage();

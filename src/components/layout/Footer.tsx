@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { COMPANY_DEFAULTS, SERVICE_CATEGORIES } from '@/lib/constants';
-import { Phone, Mail, MessageCircle, MapPin, ArrowUpRight, ShieldCheck, Heart } from 'lucide-react';
+import { Phone, Mail, MessageCircle, MapPin, ArrowUpRight, ShieldCheck } from 'lucide-react';
 
 export default function Footer() {
   const { t, getOverride } = useLanguage();

@@ -1,29 +1,53 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import AdminNav from './AdminNav';
 import {
   Inbox,
   UserCheck,
   FileCode,
   Search,
-  Filter,
-  Phone,
   Mail,
-  Clock,
-  CheckCircle2,
-  AlertCircle,
   Loader2,
   Calendar,
 } from 'lucide-react';
 
+interface LeadItem {
+  id: string;
+  name?: string;
+  client_name?: string;
+  email?: string;
+  work_email?: string;
+  phone?: string;
+  company?: string;
+  company_name?: string;
+  role?: string;
+  project_title?: string;
+  subject?: string;
+  service?: string;
+  service_category?: string;
+  message?: string;
+  description?: string;
+  scope_notes?: string;
+  status: string;
+  created_at: string;
+  target_platforms?: string[];
+  skills?: string[];
+  seniority?: string;
+  num_resources?: number;
+  engagement_type?: string;
+  estimated_budget?: string;
+  timeline?: string;
+  priority?: string;
+}
+
 export default function AdminLeadsPage() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<{
-    contacts: any[];
-    hires: any[];
-    projects: any[];
-    stats: any;
+    contacts: LeadItem[];
+    hires: LeadItem[];
+    projects: LeadItem[];
+    stats: Record<string, number>;
   }>({
     contacts: [],
     hires: [],
@@ -36,7 +60,7 @@ export default function AdminLeadsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-  const fetchLeads = async () => {
+  const fetchLeads = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/admin/leads?status=${statusFilter}`);
@@ -44,18 +68,20 @@ export default function AdminLeadsPage() {
         window.location.href = '/admin/login';
         return;
       }
-      const json = await res.json();
-      setData(json);
+      if (res.ok) {
+        const json = await res.json();
+        setData(json);
+      }
     } catch (err) {
-      console.error(err);
+      console.error('Failed to fetch leads:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter]);
 
   useEffect(() => {
     fetchLeads();
-  }, [statusFilter]);
+  }, [fetchLeads]);
 
   const handleStatusChange = async (type: 'contact' | 'hire' | 'project', id: string, newStatus: string) => {
     setUpdatingId(id);
@@ -76,7 +102,7 @@ export default function AdminLeadsPage() {
   };
 
   // Filter items by search
-  const filterList = (items: any[]) => {
+  const filterList = (items: LeadItem[]) => {
     if (!searchQuery) return items;
     return items.filter((item) => {
       const text = JSON.stringify(item).toLowerCase();
@@ -211,7 +237,7 @@ export default function AdminLeadsPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {currentList.map((item: any) => (
+            {currentList.map((item: LeadItem) => (
               <div
                 key={item.id}
                 className="p-6 rounded-2xl bg-surface-card border border-border-subtle hover:border-[#00D2FE]/40 transition-all shadow-md space-y-4"

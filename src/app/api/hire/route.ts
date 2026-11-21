@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ResourceHireSchema } from '@/validators';
 import { saveResourceHire } from '@/lib/db';
 import { checkRateLimit } from '@/lib/rate-limiter';
+import { sanitizeObject } from '@/lib/sanitize';
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown-client';
+    const forwarded = req.headers.get('x-forwarded-for');
+    const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown-client';
     const rateCheck = await checkRateLimit(ip, 6, 300000);
 
     if (!rateCheck.success) {
@@ -22,7 +24,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, message: 'Request received' });
     }
 
-    const saved = await saveResourceHire({
+    const sanitized = sanitizeObject({
       name: validated.name,
       email: validated.email,
       company: validated.company || undefined,
@@ -35,16 +37,27 @@ export async function POST(req: NextRequest) {
       description: validated.description || undefined,
     });
 
+    const saved = await saveResourceHire(sanitized);
+
     return NextResponse.json({
       success: true,
       message: 'Resource request received successfully.',
       leadId: saved?.id,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Hire API error:', error);
-    if (error?.errors) {
-      return NextResponse.json({ error: error.errors[0]?.message || 'Validation error' }, { status: 400 });
+    if (error && typeof error === 'object' && 'errors' in error) {
+      const errObj = error as { errors?: Array<{ message?: string }> };
+      if (Array.isArray(errObj.errors)) {
+        return NextResponse.json(
+          { error: errObj.errors[0]?.message || 'Validation error' },
+          { status: 400 }
+        );
+      }
     }
-    return NextResponse.json({ error: 'Failed to submit resource hire inquiry.' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to submit resource hire inquiry.' },
+      { status: 500 }
+    );
   }
 }

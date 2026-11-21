@@ -82,11 +82,25 @@ export default function ServicesClient() {
             />
           </div>
 
-          {/* Category Dropdown or Counter */}
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-400 w-full md:w-auto justify-end">
-            <span>Showing:</span>
-            <span className="text-[#00D2FE] font-bold">{filteredServices.length}</span>
-            <span>of {SERVICE_CATEGORIES.length} Categories</span>
+          {/* Category Dropdown & Counter */}
+          <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-3 py-2 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none transition-colors"
+              aria-label="Filter by service category"
+            >
+              <option value="all">All Categories ({SERVICE_CATEGORIES.length})</option>
+              {SERVICE_CATEGORIES.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.title}
+                </option>
+              ))}
+            </select>
+            <div className="flex items-center gap-1.5 text-xs font-mono text-slate-400">
+              <span className="text-[#00D2FE] font-bold">{filteredServices.length}</span>
+              <span>Verticals</span>
+            </div>
           </div>
         </div>
 

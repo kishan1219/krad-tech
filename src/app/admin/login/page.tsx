@@ -23,15 +23,22 @@ export default function AdminLoginPage() {
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await res.json();
+      let data: Record<string, string> = {};
+      try {
+        data = (await res.json()) as Record<string, string>;
+      } catch {
+        // Fallback
+      }
+
       if (!res.ok) {
-        throw new Error(data.error || 'Invalid credentials');
+        throw new Error(data.error || 'Invalid username or password');
       }
 
       router.push('/admin');
       router.refresh();
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Login failed. Please verify credentials.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Login failed. Please verify credentials.';
+      setErrorMsg(message);
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import ProjectWizardForm from '@/components/forms/ProjectWizardForm';
-import { ShieldCheck, Clock, Award, FileText } from 'lucide-react';
+import { ShieldCheck, Clock, FileText } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Project Requirements Scoping Wizard | KRAD Technology',

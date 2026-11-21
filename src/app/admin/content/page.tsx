@@ -64,13 +64,21 @@ export default function AdminContentPage() {
         }),
       });
 
+      let data: Record<string, string> = {};
+      try {
+        data = (await res.json()) as Record<string, string>;
+      } catch {
+        // Fallback
+      }
+
       if (!res.ok) {
-        throw new Error('Failed to update content in database.');
+        throw new Error(data.error || 'Failed to update content in database.');
       }
 
       setSuccessMsg(`"${id}" successfully updated in Supabase!`);
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Error updating content');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error updating content';
+      setErrorMsg(message);
     } finally {
       setSavingKey(null);
     }
@@ -114,6 +122,13 @@ export default function AdminContentPage() {
             ))}
           </div>
         </div>
+
+        {loading && (
+          <div className="flex items-center gap-2 p-3.5 rounded-xl bg-surface-card border border-border-subtle text-xs text-slate-400">
+            <Loader2 className="w-4 h-4 animate-spin text-[#00D2FE]" />
+            <span>Synchronizing live translations from database...</span>
+          </div>
+        )}
 
         {successMsg && (
           <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 flex items-center gap-2">

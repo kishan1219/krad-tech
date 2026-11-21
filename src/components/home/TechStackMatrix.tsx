@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Layers } from 'lucide-react';
 
 export default function TechStackMatrix() {
   const [activeCategory, setActiveCategory] = useState<string>('all');

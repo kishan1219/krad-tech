@@ -59,14 +59,21 @@ export default function HireResourceForm() {
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      let data: Record<string, string> = {};
+      try {
+        data = (await res.json()) as Record<string, string>;
+      } catch {
+        // Fallback if response is not JSON
+      }
+
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to submit resource hire inquiry.');
+        throw new Error(data.error || `Server responded with status ${res.status}. Please try again.`);
       }
 
       setSuccess(true);
-    } catch (err: any) {
-      setErrorMsg(err.message || 'An error occurred. Please try again.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'An error occurred. Please try again.';
+      setErrorMsg(message);
     } finally {
       setLoading(false);
     }
@@ -199,7 +206,7 @@ export default function HireResourceForm() {
             <label className="block text-xs font-medium text-slate-300 mb-1">Seniority Level</label>
             <select
               value={formData.seniority}
-              onChange={(e) => setFormData({ ...formData, seniority: e.target.value as any })}
+              onChange={(e) => setFormData({ ...formData, seniority: e.target.value as 'Mid-Level' | 'Senior' | 'Lead / Architect' })}
               className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none transition-colors"
             >
               <option value="Mid-Level">Mid-Level (3-5 years exp)</option>

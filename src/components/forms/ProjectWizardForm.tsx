@@ -41,7 +41,7 @@ export default function ProjectWizardForm() {
     _hp_company_field: '', // Honeypot field
   });
 
-  const updateField = (field: string, value: any) => {
+  const updateField = (field: string, value: string | boolean | string[]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrorMsg('');
   };
@@ -124,14 +124,21 @@ export default function ProjectWizardForm() {
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      let data: Record<string, string> = {};
+      try {
+        data = (await res.json()) as Record<string, string>;
+      } catch {
+        // Fallback if response is not JSON
+      }
+
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to submit project specifications.');
+        throw new Error(data.error || `Server responded with status ${res.status}. Please try again or contact us directly.`);
       }
 
       setSuccess(true);
-    } catch (err: any) {
-      setErrorMsg(err.message || 'An error occurred. Please try again or contact us directly.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'An error occurred. Please try again or contact us directly.';
+      setErrorMsg(message);
     } finally {
       setLoading(false);
     }

@@ -143,15 +143,15 @@ export async function updateLeadStatus(type: 'contact' | 'hire' | 'project', id:
     if (type === 'contact') {
       const idx = local.contact_inquiries.findIndex((x) => x.id === id);
       if (idx !== -1) {
-        local.contact_inquiries[idx].status = status as any;
+        local.contact_inquiries[idx].status = status as ContactInquiry['status'];
         if (notes) local.contact_inquiries[idx].notes = notes;
       }
     } else if (type === 'hire') {
       const idx = local.resource_hires.findIndex((x) => x.id === id);
-      if (idx !== -1) local.resource_hires[idx].status = status as any;
+      if (idx !== -1) local.resource_hires[idx].status = status as ResourceHire['status'];
     } else if (type === 'project') {
       const idx = local.project_requirements.findIndex((x) => x.id === id);
-      if (idx !== -1) local.project_requirements[idx].status = status as any;
+      if (idx !== -1) local.project_requirements[idx].status = status as ProjectRequirement['status'];
     }
     saveLocalData(local);
     return [{ id, status }];
@@ -340,7 +340,7 @@ export async function updateSiteContentOverride(id: string, category: string, lo
 
     if (error) throw error;
     return data;
-  } catch (err) {
+  } catch {
     const local = getLocalData();
     local.site_content[id] = value;
     saveLocalData(local);
@@ -358,9 +358,9 @@ export async function getLeadStats() {
     getProjectRequirements(),
   ]);
 
-  const newContacts = contacts.filter((x: any) => x.status === 'NEW').length;
-  const newHires = hires.filter((x: any) => x.status === 'NEW').length;
-  const newProjects = projects.filter((x: any) => x.status === 'NEW').length;
+  const newContacts = contacts.filter((x) => x.status === 'NEW').length;
+  const newHires = hires.filter((x) => x.status === 'NEW').length;
+  const newProjects = projects.filter((x) => x.status === 'NEW').length;
 
   return {
     totalInquiries: contacts.length,

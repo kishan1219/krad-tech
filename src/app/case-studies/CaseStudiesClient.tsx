@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { DEMONSTRATION_CASE_STUDIES } from '@/lib/constants';
-import { ArrowUpRight, CheckCircle2, ShieldAlert, Cpu, Terminal, ArrowRight } from 'lucide-react';
+import { CheckCircle2, ShieldAlert, Cpu, Terminal, ArrowRight } from 'lucide-react';
 
 export default function CaseStudiesClient() {
   const { t } = useLanguage();

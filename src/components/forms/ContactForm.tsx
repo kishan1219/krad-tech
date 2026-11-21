@@ -43,14 +43,21 @@ export default function ContactForm() {
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
+      let data: Record<string, string> = {};
+      try {
+        data = (await res.json()) as Record<string, string>;
+      } catch {
+        // Fallback if response is not JSON
+      }
+
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to submit contact inquiry.');
+        throw new Error(data.error || `Server responded with status ${res.status}. Please try again.`);
       }
 
       setSuccess(true);
-    } catch (err: any) {
-      setErrorMsg(err.message || 'An error occurred. Please try again.');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'An error occurred. Please try again.';
+      setErrorMsg(message);
     } finally {
       setLoading(false);
     }
