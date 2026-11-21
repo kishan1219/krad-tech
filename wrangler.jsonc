@@ -9,11 +9,12 @@
     "command": "npm run build"
   },
   "assets": {
-    "directory": ".next"
+    "directory": "dist"
   },
-  "pages_build_output_dir": ".next",
+  "pages_build_output_dir": "dist",
   "vars": {
-    "NODE_VERSION": "22"
+    "NODE_VERSION": "22",
+    "RENDER_BACKEND_URL": "https://krad-tech.onrender.com"
   },
   "observability": {
     "logs": {
