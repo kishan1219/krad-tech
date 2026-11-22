@@ -6,14 +6,9 @@ import { useLanguage } from '@/context/LanguageContext';
 import { 
   MessageSquareText, 
   Bot, 
-  Cpu, 
   Mic, 
   ArrowUpRight, 
-  CheckCheck, 
-  Zap, 
-  PhoneCall, 
-  Workflow, 
-  CheckCircle2 
+  Workflow 
 } from 'lucide-react';
 import SpotlightCard from '../ui/SpotlightCard';
 
@@ -21,10 +16,10 @@ export default function CorePillars() {
   const { t } = useLanguage();
 
   return (
-    <section className="py-24 bg-[#050814] relative border-t border-border-subtle">
+    <section className="py-24 bg-[#050814] relative border-t border-white/10">
       {/* Background ambient lighting */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-[#00D2FE]/5 rounded-full filter blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-[#6366F1]/5 rounded-full filter blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-[#3B82F6]/5 rounded-full filter blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
@@ -43,216 +38,177 @@ export default function CorePillars() {
         {/* Asymmetrical Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          {/* Card 1: Featured 2-Column WhatsApp Business API Card */}
+          {/* Card 1: Enterprise WhatsApp Business API Infrastructure (2 Cols) */}
           <SpotlightCard 
-            className="md:col-span-2 p-7 lg:p-8 flex flex-col justify-between border-[#00D2FE]/25 bg-gradient-to-br from-[#0B1120] to-[#0A0E1D]"
-            spotlightColor="rgba(37, 211, 102, 0.12)"
+            className="md:col-span-2 p-8 lg:p-9 flex flex-col justify-between border-white/10 bg-gradient-to-br from-[#0B1120] to-[#0A0E1D]"
+            spotlightColor="rgba(0, 210, 254, 0.12)"
           >
             <div>
               {/* Header */}
               <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3.5">
                   <div className="w-12 h-12 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 flex items-center justify-center text-[#25D366]">
                     <MessageSquareText className="w-6 h-6" />
                   </div>
                   <div>
                     <span className="text-[10px] font-mono text-[#25D366] font-semibold tracking-wider uppercase block">
-                      Official API Integration
+                      Enterprise Communication Infrastructure
                     </span>
                     <h3 className="text-xl font-bold text-white">
-                      WhatsApp Business API
+                      WhatsApp Business API Solutions
                     </h3>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/20 font-medium flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse"></span>
-                    Meta Cloud API Verified
+                  <span className="text-[10px] font-mono px-3 py-1 rounded-full bg-white/5 text-slate-300 border border-white/10 font-medium flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                    Official Meta Cloud API
                   </span>
                 </div>
               </div>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 max-w-2xl">
-                Automate mission-critical customer interactions with zero manual intervention. We engineer custom Meta Cloud API webhooks, dynamic message templates, verified payment checkouts, and multi-agent customer triage.
+                We engineer scalable, high-concurrency WhatsApp infrastructure for enterprises. Connect verified customer engagement pipelines directly into your core PostgreSQL databases, ERP systems, and CRM workflows.
               </p>
 
-              {/* Interactive Simulated Conversation Viewport */}
-              <div className="p-4 rounded-xl bg-[#060914] border border-border-subtle/80 space-y-3 font-sans text-xs">
-                {/* Simulated Customer Inbound */}
-                <div className="flex items-start gap-2.5 justify-end">
-                  <div className="max-w-md p-3 rounded-2xl rounded-tr-none bg-[#0B2E24] text-slate-100 border border-[#25D366]/20 shadow-sm">
-                    <p className="text-xs">
-                      Hi, can we integrate automated appointment booking directly into our PostgreSQL CRM with instant slot confirmation?
-                    </p>
-                    <span className="text-[10px] text-emerald-400/80 float-right mt-1 ml-2 flex items-center gap-1">
-                      10:42 AM <CheckCheck className="w-3.5 h-3.5 inline text-[#25D366]" />
-                    </span>
-                  </div>
+              {/* Technical Specifications Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-xl bg-[#060914] border border-white/10 text-xs">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Throughput</span>
+                  <p className="text-white font-semibold font-mono">10,000+ msg/min</p>
+                  <span className="text-[10px] text-slate-500">Auto-scalable edge workers</span>
                 </div>
-
-                {/* Simulated Webhook Processing Pulse */}
-                <div className="flex items-center justify-center gap-2 py-1 text-[10px] font-mono text-slate-400">
-                  <Zap className="w-3 h-3 text-[#00D2FE]" />
-                  <span>Webhook Event: Inbound Received • Signature Verified (12ms)</span>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Security</span>
+                  <p className="text-emerald-400 font-semibold font-mono">HMAC-SHA256</p>
+                  <span className="text-[10px] text-slate-500">End-to-end payload signature</span>
                 </div>
-
-                {/* Simulated AI Agent Outbound */}
-                <div className="flex items-start gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-[#00D2FE]/20 border border-[#00D2FE]/40 flex items-center justify-center text-[#00D2FE] shrink-0 text-[10px] font-bold">
-                    K
-                  </div>
-                  <div className="max-w-md p-3 rounded-2xl rounded-tl-none bg-[#111A2E] text-slate-200 border border-border-subtle shadow-sm">
-                    <p className="text-xs">
-                      ✅ Absolutely. OmniFlow webhook intercepts the booking request, queries your calendar API in 85ms, reserves the slot in PostgreSQL, and dispatches a verified WhatsApp ticket with an `.ics` calendar invite.
-                    </p>
-                    <span className="text-[10px] text-slate-400 float-right mt-1 ml-2">
-                      10:42 AM • OmniFlow Agent
-                    </span>
-                  </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Integrations</span>
+                  <p className="text-[#00D2FE] font-semibold font-mono">PostgreSQL & ERP</p>
+                  <span className="text-[10px] text-slate-500">Direct bi-directional sync</span>
                 </div>
               </div>
             </div>
 
             {/* Action Footer */}
-            <div className="pt-6 mt-6 border-t border-border-subtle/60 flex items-center justify-between text-xs font-semibold text-[#00D2FE]">
+            <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-[#00D2FE]">
               <Link
                 href="/services#ai-business-solutions"
                 className="inline-flex items-center gap-1.5 hover:underline"
               >
-                <span>Explore WhatsApp Solutions</span>
+                <span>Explore WhatsApp Infrastructure</span>
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
-              <span className="font-mono text-slate-500 text-[11px]">Feature 01</span>
+              <span className="font-mono text-slate-500 text-[11px]">Capability 01</span>
             </div>
           </SpotlightCard>
 
-          {/* Card 2: AI Voice Assistants with Waveform */}
+          {/* Card 2: AI Voice Telephony & Conversational Audio */}
           <SpotlightCard 
-            className="p-7 flex flex-col justify-between border-[#818CF8]/25 bg-gradient-to-br from-[#0B1120] to-[#0D1226]"
-            spotlightColor="rgba(129, 140, 248, 0.15)"
+            className="p-8 flex flex-col justify-between border-white/10 bg-gradient-to-br from-[#0B1120] to-[#0D1226]"
+            spotlightColor="rgba(129, 140, 248, 0.12)"
           >
             <div>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-5">
                 <div className="w-12 h-12 rounded-xl bg-[#818CF8]/10 border border-[#818CF8]/30 flex items-center justify-center text-[#818CF8]">
                   <Mic className="w-6 h-6" />
                 </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#818CF8]/10 text-[#818CF8] border border-[#818CF8]/20">
-                  Voice AI & Telephony
+                <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#818CF8]/10 text-[#818CF8] border border-[#818CF8]/20">
+                  Conversational Audio
                 </span>
               </div>
 
-              <h3 className="text-lg font-bold text-white mb-1">
-                AI Voice Assistants
+              <h3 className="text-lg font-bold text-white mb-2">
+                Conversational Voice AI
               </h3>
-              <p className="text-xs text-slate-400 mb-4">
-                Sub-300ms ultra-low latency voice agents for telephony, lead intake, and automated customer booking.
+              <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+                Sub-300ms ultra-low latency voice agents engineered for telephone booking, customer triage, and intelligent appointment dispatch.
               </p>
 
-              {/* Animated Audio Equalizer Waveform */}
-              <div className="p-4 rounded-xl bg-[#060914] border border-border-subtle/80 space-y-3">
-                <div className="flex items-center justify-between text-[11px] font-mono text-slate-300">
-                  <span className="flex items-center gap-1.5 text-emerald-400">
-                    <PhoneCall className="w-3.5 h-3.5 animate-pulse" />
-                    <span>Live Call: Active</span>
-                  </span>
-                  <span className="text-slate-500">Latency: 240ms</span>
+              {/* Technical Telemetry Strip */}
+              <div className="p-3.5 rounded-xl bg-[#060914] border border-white/10 space-y-2 text-xs font-mono">
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>Stream Protocol</span>
+                  <span className="text-[#818CF8] font-bold">WebSockets / WebRTC</span>
                 </div>
-
-                <div className="h-10 flex items-center justify-center gap-1 px-2">
-                  <div className="w-1.5 bg-[#818CF8] rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-4"></div>
-                  <div className="w-1.5 bg-[#00D2FE] rounded-full animate-[pulse_0.6s_ease-in-out_infinite] h-8"></div>
-                  <div className="w-1.5 bg-[#818CF8] rounded-full animate-[pulse_0.9s_ease-in-out_infinite] h-5"></div>
-                  <div className="w-1.5 bg-[#38BDF8] rounded-full animate-[pulse_0.5s_ease-in-out_infinite] h-9"></div>
-                  <div className="w-1.5 bg-[#818CF8] rounded-full animate-[pulse_0.7s_ease-in-out_infinite] h-6"></div>
-                  <div className="w-1.5 bg-[#00D2FE] rounded-full animate-[pulse_0.6s_ease-in-out_infinite] h-7"></div>
-                  <div className="w-1.5 bg-[#818CF8] rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-4"></div>
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>Inference Latency</span>
+                  <span className="text-emerald-400 font-bold">&lt; 280ms P99</span>
                 </div>
-
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 border-t border-border-subtle/60 pt-2">
-                  <span>Speech-to-Text: Whisper</span>
-                  <span>Audio Out: ElevenLabs</span>
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>Audio Fidelity</span>
+                  <span className="text-slate-200">Lossless 24kHz</span>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 mt-6 border-t border-border-subtle/60 flex items-center justify-between text-xs font-semibold text-[#818CF8]">
+            <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-[#818CF8]">
               <Link href="/services#ai-business-solutions" className="inline-flex items-center gap-1 hover:underline">
-                <span>View Voice Capabilities</span>
+                <span>View Voice Specifications</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
-              <span className="font-mono text-slate-500 text-[11px]">Feature 02</span>
+              <span className="font-mono text-slate-500 text-[11px]">Capability 02</span>
             </div>
           </SpotlightCard>
 
-          {/* Card 3: Business Automation Pipeline */}
+          {/* Card 3: Business Automation & Event Pipelines */}
           <SpotlightCard 
-            className="p-7 flex flex-col justify-between border-[#00D2FE]/25 bg-gradient-to-br from-[#0B1120] to-[#0A1224]"
-            spotlightColor="rgba(0, 210, 254, 0.15)"
+            className="p-8 flex flex-col justify-between border-white/10 bg-gradient-to-br from-[#0B1120] to-[#0A1224]"
+            spotlightColor="rgba(0, 210, 254, 0.12)"
           >
             <div>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-5">
                 <div className="w-12 h-12 rounded-xl bg-[#00D2FE]/10 border border-[#00D2FE]/30 flex items-center justify-center text-[#00D2FE]">
                   <Workflow className="w-6 h-6" />
                 </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#00D2FE]/10 text-[#00D2FE] border border-[#00D2FE]/20">
-                  n8n / Custom Workflows
+                <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#00D2FE]/10 text-[#00D2FE] border border-[#00D2FE]/20">
+                  Zero-Touch Operations
                 </span>
               </div>
 
-              <h3 className="text-lg font-bold text-white mb-1">
-                Business Automation
+              <h3 className="text-lg font-bold text-white mb-2">
+                Business Process Automation
               </h3>
-              <p className="text-xs text-slate-400 mb-4">
-                Zero-touch operational data pipelines that eliminate repetitive manual workflows across ERP, CRM, and cloud services.
+              <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+                Resilient event-driven automation pipelines connecting databases, CRM systems, payment gateways, and custom ERPs with zero manual data entry.
               </p>
 
-              {/* Animated Step-by-Step Flow */}
-              <div className="p-3.5 rounded-xl bg-[#060914] border border-border-subtle/80 space-y-2">
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
-                  <span>Event Pipeline</span>
-                  <span className="text-emerald-400">100% Zero-Drop</span>
+              {/* Technical Telemetry Strip */}
+              <div className="p-3.5 rounded-xl bg-[#060914] border border-white/10 space-y-2 text-xs font-mono">
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>Execution Model</span>
+                  <span className="text-[#00D2FE] font-bold">Event-Driven Async</span>
                 </div>
-
-                <div className="grid grid-cols-4 gap-1.5 text-center text-[10px] font-mono">
-                  <div className="p-1.5 rounded bg-white/5 border border-border-subtle text-slate-300">
-                    Webhook
-                  </div>
-                  <div className="p-1.5 rounded bg-[#00D2FE]/10 border border-[#00D2FE]/30 text-[#00D2FE]">
-                    Transform
-                  </div>
-                  <div className="p-1.5 rounded bg-white/5 border border-border-subtle text-slate-300">
-                    Branch
-                  </div>
-                  <div className="p-1.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-                    Sync DB
-                  </div>
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>Failure Recovery</span>
+                  <span className="text-emerald-400 font-bold">Dead-Letter Queues</span>
                 </div>
-
-                <div className="text-[10px] text-slate-400 pt-1 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00D2FE]" />
-                  <span>Automated invoice generation & WhatsApp dispatch</span>
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>Supported Tools</span>
+                  <span className="text-slate-200">n8n, Zapier & Custom</span>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 mt-6 border-t border-border-subtle/60 flex items-center justify-between text-xs font-semibold text-[#00D2FE]">
+            <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-[#00D2FE]">
               <Link href="/services#custom-software" className="inline-flex items-center gap-1 hover:underline">
                 <span>View Automation Specs</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
-              <span className="font-mono text-slate-500 text-[11px]">Feature 03</span>
+              <span className="font-mono text-slate-500 text-[11px]">Capability 03</span>
             </div>
           </SpotlightCard>
 
-          {/* Card 4: AI Chatbots & RAG Agents (Span 2 columns) */}
+          {/* Card 4: Enterprise AI Chatbots & Knowledge RAG (2 Cols) */}
           <SpotlightCard 
-            className="md:col-span-2 p-7 lg:p-8 flex flex-col justify-between border-[#38BDF8]/25 bg-gradient-to-br from-[#0B1120] to-[#0A1020]"
-            spotlightColor="rgba(56, 189, 248, 0.15)"
+            className="md:col-span-2 p-8 lg:p-9 flex flex-col justify-between border-white/10 bg-gradient-to-br from-[#0B1120] to-[#0A1020]"
+            spotlightColor="rgba(56, 189, 248, 0.12)"
           >
             <div>
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                <div className="flex items-center gap-3.5">
                   <div className="w-12 h-12 rounded-xl bg-[#38BDF8]/10 border border-[#38BDF8]/30 flex items-center justify-center text-[#38BDF8]">
                     <Bot className="w-6 h-6" />
                   </div>
@@ -261,40 +217,46 @@ export default function CorePillars() {
                       Autonomous Intelligence
                     </span>
                     <h3 className="text-xl font-bold text-white">
-                      AI Chatbots & Autonomous Agents
+                      Enterprise RAG & Autonomous Agents
                     </h3>
                   </div>
                 </div>
 
-                <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-[#38BDF8]/10 text-[#38BDF8] border border-[#38BDF8]/20">
-                  LangChain • LlamaIndex • Pinecone
+                <span className="text-[10px] font-mono px-3 py-1 rounded-full bg-white/5 text-slate-300 border border-white/10">
+                  Private Knowledge Grounding
                 </span>
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-5 max-w-2xl">
-                Equip your customer support and internal teams with high-precision RAG agents grounded in your private enterprise documentation. Zero hallucinations, strict permission boundaries, and instant citation references.
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 max-w-2xl">
+                Ground your support teams and internal operations with strict, private knowledge retrieval. We engineer deterministic RAG architectures with citation references, zero data leakage, and strict security boundaries.
               </p>
 
-              {/* RAG Knowledge Architecture Strip */}
-              <div className="p-3.5 rounded-xl bg-[#060914] border border-border-subtle/80 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2">
-                  <Cpu className="w-4 h-4 text-[#38BDF8]" />
-                  <span className="text-slate-300 font-medium">Vector Indexing:</span>
-                  <span className="font-mono text-slate-400 text-[11px]">1536-dim Cohere / OpenAI Embeddings</span>
+              {/* Architecture Feature Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-xl bg-[#060914] border border-white/10 text-xs">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Vector Storage</span>
+                  <p className="text-white font-semibold font-mono">1536-dim Embeddings</p>
+                  <span className="text-[10px] text-slate-500">Pinecone & pgvector</span>
                 </div>
-                <div className="flex items-center gap-2 font-mono text-[11px] text-emerald-400">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Zero Hallucination Guardrails Active</span>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Accuracy</span>
+                  <p className="text-emerald-400 font-semibold font-mono">99.4% Factual Match</p>
+                  <span className="text-[10px] text-slate-500">Zero-hallucination guardrails</span>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Data Privacy</span>
+                  <p className="text-[#38BDF8] font-semibold font-mono">Zero Model Training</p>
+                  <span className="text-[10px] text-slate-500">100% private enterprise store</span>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 mt-6 border-t border-border-subtle/60 flex items-center justify-between text-xs font-semibold text-[#38BDF8]">
+            <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-[#38BDF8]">
               <Link href="/services#ai-business-solutions" className="inline-flex items-center gap-1.5 hover:underline">
                 <span>Explore RAG Architectures</span>
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
-              <span className="font-mono text-slate-500 text-[11px]">Feature 04</span>
+              <span className="font-mono text-slate-500 text-[11px]">Capability 04</span>
             </div>
           </SpotlightCard>
 
