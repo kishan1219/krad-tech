@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradHealth" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#060A16"/>
+      <stop offset="50%" stop-color="#081022"/>
+      <stop offset="100%" stop-color="#050814"/>
+    </linearGradient>
+    <linearGradient id="ecgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="50%" stop-color="#00D2FE"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="750" fill="url(#bgGradHealth)"/>
+
+  <!-- Window Frame -->
+  <rect x="40" y="40" width="1120" height="670" rx="20" fill="#090E1D" stroke="#1E293B" stroke-width="1.5"/>
+
+  <!-- Window Header -->
+  <rect x="40" y="40" width="1120" height="54" rx="20" fill="#0D152A"/>
+  <rect x="40" y="74" width="1120" height="20" fill="#0D152A"/>
+  <line x1="40" y1="94" x2="1160" y2="94" stroke="#1E293B" stroke-width="1"/>
+
+  <!-- Traffic Lights -->
+  <circle cx="70" cy="67" r="6" fill="#EF4444" fill-opacity="0.8"/>
+  <circle cx="90" cy="67" r="6" fill="#F59E0B" fill-opacity="0.8"/>
+  <circle cx="110" cy="67" r="6" fill="#10B981" fill-opacity="0.8"/>
+
+  <text x="140" y="72" font-family="monospace" font-size="13" font-weight="600" fill="#94A3B8">
+    PulseHealth Core // End-to-End Encrypted Telehealth &amp; Continuous Biometrics
+  </text>
+  <rect x="1000" y="55" width="130" height="26" rx="6" fill="#38BDF8" fill-opacity="0.12" stroke="#38BDF8" stroke-width="1"/>
+  <circle cx="1015" cy="68" r="4" fill="#38BDF8"/>
+  <text x="1027" y="72" font-family="monospace" font-size="11" font-weight="700" fill="#38BDF8">WEBRTC ACTIVE</text>
+
+  <!-- Left Side: WebRTC Encrypted Video Consultation Frame -->
+  <rect x="65" y="115" width="460" height="340" rx="14" fill="#060A16" stroke="#1E293B" stroke-width="1"/>
+  
+  <!-- Simulated Video Stream Canvas -->
+  <rect x="80" y="130" width="430" height="250" rx="10" fill="#0E172E"/>
+  <circle cx="295" cy="225" r="45" fill="#1E293B"/>
+  <path d="M295 240 C280 240 265 255 265 275 L325 275 C325 255 310 240 295 240 Z" fill="#334155"/>
+  <circle cx="295" cy="220" r="22" fill="#334155"/>
+  
+  <!-- Encrypted Overlay Badges -->
+  <rect x="95" y="145" width="130" height="24" rx="6" fill="#050814" fill-opacity="0.85" stroke="#10B981" stroke-width="1"/>
+  <text x="107" y="161" font-family="monospace" font-size="10" font-weight="700" fill="#34D399">E2EE AES-GCM 256</text>
+
+  <rect x="375" y="145" width="120" height="24" rx="6" fill="#050814" fill-opacity="0.85" stroke="#00D2FE" stroke-width="1"/>
+  <text x="388" y="161" font-family="monospace" font-size="10" font-weight="700" fill="#00D2FE">1080p60 // 18ms</text>
+
+  <!-- Video Call Controls -->
+  <rect x="80" y="395" width="430" height="45" rx="8" fill="#0A1124" stroke="#1E293B" stroke-width="1"/>
+  <circle cx="265" cy="417" r="14" fill="#1E293B"/>
+  <circle cx="300" cy="417" r="14" fill="#1E293B"/>
+  <circle cx="335" cy="417" r="14" fill="#EF4444"/>
+  <text x="95" y="422" font-family="sans-serif" font-size="11" font-weight="600" fill="#94A3B8">Dr. Sarah Jenkins (Cardiology)</text>
+
+  <!-- Left Bottom: Bluetooth LE Stream & Vitals Grid -->
+  <rect x="65" y="475" width="460" height="210" rx="14" fill="#060A16" stroke="#1E293B" stroke-width="1"/>
+  <text x="85" y="505" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">BLE Telemetry Broadcast Nodes</text>
+
+  <rect x="85" y="525" width="135" height="140" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <text x="100" y="550" font-family="sans-serif" font-size="11" font-weight="600" fill="#94A3B8">Pulse Rate</text>
+  <text x="100" y="590" font-family="sans-serif" font-size="32" font-weight="800" fill="#EF4444">72</text>
+  <text x="145" y="590" font-family="sans-serif" font-size="13" fill="#94A3B8">BPM</text>
+  <text x="100" y="625" font-family="monospace" font-size="10" fill="#34D399">Normal Sinus</text>
+  <text x="100" y="645" font-family="monospace" font-size="9" fill="#64748B">Sync: Real-time</text>
+
+  <rect x="230" y="525" width="135" height="140" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <text x="245" y="550" font-family="sans-serif" font-size="11" font-weight="600" fill="#94A3B8">Blood Oxygen</text>
+  <text x="245" y="590" font-family="sans-serif" font-size="32" font-weight="800" fill="#00D2FE">99%</text>
+  <text x="245" y="625" font-family="monospace" font-size="10" fill="#34D399">Optimal Range</text>
+  <text x="245" y="645" font-family="monospace" font-size="9" fill="#64748B">SpO2 Sensor</text>
+
+  <rect x="375" y="525" width="135" height="140" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <text x="390" y="550" font-family="sans-serif" font-size="11" font-weight="600" fill="#94A3B8">Core Temp</text>
+  <text x="390" y="590" font-family="sans-serif" font-size="32" font-weight="800" fill="#F59E0B">98.6°</text>
+  <text x="390" y="625" font-family="monospace" font-size="10" fill="#34D399">Afebrile</text>
+  <text x="390" y="645" font-family="monospace" font-size="9" fill="#64748B">Continuous</text>
+
+  <!-- Right Side: Continuous Real-Time ECG Biometric Stream -->
+  <rect x="545" y="115" width="585" height="340" rx="14" fill="#060A16" stroke="#1E293B" stroke-width="1"/>
+  <text x="570" y="145" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Lead II Continuous Cardiac Waveform</text>
+  <text x="570" y="165" font-family="monospace" font-size="11" fill="#64748B">Flutter Native C++ Engine // Zero Packet Drop / 1000 Hz Sampling</text>
+
+  <!-- ECG Grid Lines -->
+  <g stroke="#1E293B" stroke-width="0.8">
+    <line x1="570" y1="200" x2="1100" y2="200"/>
+    <line x1="570" y1="250" x2="1100" y2="250"/>
+    <line x1="570" y1="300" x2="1100" y2="300"/>
+    <line x1="570" y1="350" x2="1100" y2="350"/>
+    <line x1="570" y1="400" x2="1100" y2="400"/>
+  </g>
+
+  <!-- ECG Path Wave -->
+  <path d="M570 300 L610 300 L620 290 L630 300 L645 300 L655 330 L670 180 L685 340 L695 300 L710 300 L725 285 L740 300 L790 300 L800 290 L810 300 L825 300 L835 330 L850 180 L865 340 L875 300 L890 300 L905 285 L920 300 L970 300 L980 290 L990 300 L1005 300 L1015 330 L1030 180 L1045 340 L1055 300 L1070 300 L1085 285 L1100 300" fill="none" stroke="url(#ecgGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Right Bottom: HIPAA Compliance & Architecture Proof -->
+  <rect x="545" y="475" width="585" height="210" rx="14" fill="#060A16" stroke="#1E293B" stroke-width="1"/>
+  <text x="570" y="505" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Security Architecture &amp; Zero-Trust Audit Ledger</text>
+
+  <rect x="570" y="530" width="260" height="135" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <text x="585" y="555" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">Regulatory Compliance</text>
+  <text x="585" y="580" font-family="monospace" font-size="11" fill="#34D399">✓ HIPAA Security Rule Validated</text>
+  <text x="585" y="605" font-family="monospace" font-size="11" fill="#34D399">✓ GDPR Article 9 Special Data</text>
+  <text x="585" y="630" font-family="monospace" font-size="11" fill="#34D399">✓ ISO 27001 Cryptographic Standards</text>
+  <text x="585" y="650" font-family="monospace" font-size="10" fill="#64748B">Zero PHI stored in plain text</text>
+
+  <rect x="850" y="530" width="260" height="135" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <text x="865" y="555" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">Real-time Stream Engine</text>
+  <text x="865" y="580" font-family="monospace" font-size="11" fill="#00D2FE">Frame Rate: 60 fps Lock</text>
+  <text x="865" y="605" font-family="monospace" font-size="11" fill="#00D2FE">Client Ingestion: &lt; 18ms</text>
+  <text x="865" y="630" font-family="monospace" font-size="11" fill="#00D2FE">Offline Buffer: SQLite Encrypted</text>
+  <text x="865" y="650" font-family="monospace" font-size="10" fill="#64748B">Auto-reconnect WebSocket mesh</text>
+</svg>

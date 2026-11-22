@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { DEMONSTRATION_CASE_STUDIES } from '@/lib/constants';
 import { 
@@ -11,10 +12,7 @@ import {
   Layers, 
   Cpu, 
   FileText, 
-  ListCheck, 
-  Video, 
-  Heart, 
-  Lock
+  ListCheck
 } from 'lucide-react';
 import SpotlightCard from '../ui/SpotlightCard';
 import ArchitectureNodeFlow from './ArchitectureNodeFlow';
@@ -153,84 +151,42 @@ export default function FeaturedCaseStudies() {
                   {/* Tab 1: Product UI & Visual Architecture Preview */}
                   {currentTab === 'overview' && (
                     <div className="space-y-4 animate-in fade-in duration-200">
-                      {/* Realistic UI Product Preview Frame */}
+                      {/* Realistic UI Product Preview Frame with Embedded Graphic */}
                       <div className="rounded-xl bg-[#060914] border border-white/10 overflow-hidden shadow-2xl">
                         {/* Mockup Window Chrome */}
-                        <div className="flex items-center justify-between px-3 py-2 bg-[#090E1C] border-b border-white/10 text-[10px] font-mono text-slate-400">
+                        <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#090E1C] border-b border-white/10 text-[10px] font-mono text-slate-400">
                           <div className="flex items-center gap-1.5">
-                            <span className="w-2 h-2 rounded-full bg-rose-500/80" />
-                            <span className="w-2 h-2 rounded-full bg-amber-500/80" />
-                            <span className="w-2 h-2 rounded-full bg-emerald-500/80" />
-                            <span className="ml-1 text-slate-300 font-sans font-medium text-[11px]">
-                              {isOmniFlow ? 'OmniFlow AI Console' : 'PulseHealth Telehealth Suite'}
+                            <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                            <span className="ml-1 text-slate-200 font-sans font-semibold text-xs">
+                              {isOmniFlow ? 'OmniFlow AI // Ingestion & Neural Routing Hub' : 'PulseHealth Core // Encrypted WebRTC & Biometrics'}
                             </span>
                           </div>
-                          <span className="text-emerald-400">Live Simulation</span>
+                          <span className="text-emerald-400 font-bold flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            Interactive Architecture Preview
+                          </span>
                         </div>
 
-                        {/* Mockup Body Content */}
-                        <div className="p-4 space-y-3">
-                          {isOmniFlow ? (
-                            <>
-                              {/* OmniFlow Live Metrics */}
-                              <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono">
-                                <div className="p-2 rounded-lg bg-white/5 border border-white/5">
-                                  <span className="text-[10px] text-slate-400 block">Resolution Rate</span>
-                                  <span className="font-bold text-[#00D2FE]">90.4%</span>
-                                </div>
-                                <div className="p-2 rounded-lg bg-white/5 border border-white/5">
-                                  <span className="text-[10px] text-slate-400 block">Avg Response</span>
-                                  <span className="font-bold text-emerald-400">1.8s</span>
-                                </div>
-                                <div className="p-2 rounded-lg bg-white/5 border border-white/5">
-                                  <span className="text-[10px] text-slate-400 block">Daily Inbound</span>
-                                  <span className="font-bold text-[#818CF8]">24,800+</span>
-                                </div>
-                              </div>
-                              <div className="p-3 rounded-lg bg-[#0A0F1D] border border-white/5 text-[11px] text-slate-300 space-y-1">
-                                <div className="flex items-center justify-between text-slate-400 font-mono text-[10px]">
-                                  <span>Active Pipeline: WhatsApp Cloud API</span>
-                                  <span className="text-emerald-400">Connected</span>
-                                </div>
-                                <p className="text-xs text-slate-200">
-                                  &ldquo;Autonomous triage routed customer inquiry to Pinecone Knowledge Base with 0.96 cosine match.&rdquo;
-                                </p>
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                              {/* PulseHealth Medical Vitals Stream */}
-                              <div className="p-3 rounded-lg bg-[#0A0F1D] border border-white/5 space-y-2">
-                                <div className="flex items-center justify-between text-xs font-mono">
-                                  <span className="flex items-center gap-1.5 text-rose-400">
-                                    <Heart className="w-3.5 h-3.5 animate-pulse" />
-                                    <span>Real-Time Biometrics</span>
-                                  </span>
-                                  <span className="text-emerald-400 text-[10px] flex items-center gap-1">
-                                    <Lock className="w-3 h-3" /> Encrypted WebRTC
-                                  </span>
-                                </div>
-                                <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono">
-                                  <div className="p-1.5 rounded bg-white/5">
-                                    <span className="text-[9px] text-slate-400 block">Pulse</span>
-                                    <span className="text-rose-400 font-bold">72 BPM</span>
-                                  </div>
-                                  <div className="p-1.5 rounded bg-white/5">
-                                    <span className="text-[9px] text-slate-400 block">SpO2</span>
-                                    <span className="text-[#00D2FE] font-bold">98%</span>
-                                  </div>
-                                  <div className="p-1.5 rounded bg-white/5">
-                                    <span className="text-[9px] text-slate-400 block">Latency</span>
-                                    <span className="text-emerald-400 font-bold">&lt;180ms</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-2 text-[11px] text-slate-400">
-                                <Video className="w-3.5 h-3.5 text-[#38BDF8]" />
-                                <span>60 FPS multi-platform iOS/Android consulting room</span>
-                              </div>
-                            </>
-                          )}
+                        {/* High-Resolution System UI Image */}
+                        <div className="relative w-full aspect-[16/10] bg-[#070B16] overflow-hidden group/case">
+                          <Image
+                            src={isOmniFlow ? '/brand/showcase-omniflow.svg' : '/brand/showcase-pulsehealth.svg'}
+                            alt={isOmniFlow ? 'OmniFlow AI System Architecture Dashboard' : 'PulseHealth Telehealth & Biometric Waveform Console'}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            className="object-cover transition-transform duration-500 group-hover/case:scale-[1.02]"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#060914]/85 via-transparent to-transparent pointer-events-none" />
+                          <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-slate-200 bg-[#090E1C]/90 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-md">
+                            <span className="text-[#00D2FE] font-bold">
+                              {isOmniFlow ? 'Meta WhatsApp Cloud API + RAG' : 'HIPAA Compliant WebRTC Stream'}
+                            </span>
+                            <span className="text-emerald-400">
+                              {isOmniFlow ? 'E2E Latency: 372ms' : '60 FPS Continuous ECG'}
+                            </span>
+                          </div>
                         </div>
                       </div>
 

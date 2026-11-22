@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   Globe, 
   Smartphone, 
@@ -10,10 +11,7 @@ import {
   ArrowUpRight, 
   ShieldCheck, 
   Zap, 
-  Activity, 
-  Fingerprint, 
-  Wifi, 
-  Battery 
+  Activity
 } from 'lucide-react';
 import SpotlightCard from '../ui/SpotlightCard';
 
@@ -70,10 +68,10 @@ export default function WhatWeBuild() {
                 High-concurrency SaaS platforms, real-time analytics portals, and customer-facing web applications built with Next.js 15 App Router, React 19, and scalable microservices.
               </p>
 
-              {/* Browser Window Chrome Mockup */}
+              {/* Browser Window Chrome Mockup with Embedded High-Resolution Graphic */}
               <div className="rounded-xl bg-[#060914] border border-border-subtle/80 overflow-hidden shadow-2xl">
                 {/* Browser Address Bar */}
-                <div className="flex items-center gap-3 px-4 py-2.5 bg-[#090E1C] border-b border-border-subtle/70">
+                <div className="flex items-center gap-3 px-4 py-2 bg-[#090E1C] border-b border-border-subtle/70">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
                     <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
@@ -85,19 +83,19 @@ export default function WhatWeBuild() {
                   </div>
                 </div>
 
-                {/* Browser Content Area */}
-                <div className="p-4 grid grid-cols-3 gap-3 text-center">
-                  <div className="p-2.5 rounded-lg bg-white/5 border border-border-subtle">
-                    <span className="text-[10px] font-mono text-slate-400 block">P99 Latency</span>
-                    <span className="text-sm font-bold text-[#00D2FE] font-mono">42ms</span>
-                  </div>
-                  <div className="p-2.5 rounded-lg bg-white/5 border border-border-subtle">
-                    <span className="text-[10px] font-mono text-slate-400 block">Edge SSR</span>
-                    <span className="text-sm font-bold text-emerald-400 font-mono">100% Hit</span>
-                  </div>
-                  <div className="p-2.5 rounded-lg bg-white/5 border border-border-subtle">
-                    <span className="text-[10px] font-mono text-slate-400 block">Accessibility</span>
-                    <span className="text-sm font-bold text-[#38BDF8] font-mono">WCAG 2.1 AA</span>
+                {/* High-Resolution Production UI Preview Image */}
+                <div className="relative w-full aspect-[16/9] bg-[#070B16] overflow-hidden group/img">
+                  <Image
+                    src="/brand/showcase-web-platform.svg"
+                    alt="KRAD Modern Web Applications & SaaS Architecture Dashboard"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 66vw"
+                    className="object-cover transition-transform duration-500 group-hover/img:scale-[1.02]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060914]/80 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-slate-300 bg-[#090E1C]/85 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-md">
+                    <span className="text-[#00D2FE] font-bold">Live SaaS Dashboard</span>
+                    <span className="text-emerald-400">P99: 28.4ms • 100% Cache Hit</span>
                   </div>
                 </div>
               </div>
@@ -147,28 +145,21 @@ export default function WhatWeBuild() {
                 Fluid, native-speed cross-platform apps with offline sync, sensor telemetry, and biometric auth.
               </p>
 
-              {/* Smartphone Screen Bezel Mockup */}
-              <div className="p-3 rounded-2xl bg-[#060914] border border-border-subtle/80 space-y-2.5 max-w-[240px] mx-auto shadow-xl">
-                {/* Phone Status Bar */}
-                <div className="flex items-center justify-between text-[9px] font-mono text-slate-400 px-1">
-                  <span>9:41</span>
-                  <div className="w-10 h-2 bg-slate-800 rounded-full" />
-                  <div className="flex items-center gap-1">
-                    <Wifi className="w-2.5 h-2.5" />
-                    <Battery className="w-2.5 h-2.5" />
+              {/* Smartphone Dual-Device Mockup with Embedded Graphic */}
+              <div className="rounded-xl overflow-hidden border border-border-subtle/80 bg-[#060914] shadow-xl group/mob mb-4">
+                <div className="relative w-full aspect-[4/3] bg-[#060A16] overflow-hidden">
+                  <Image
+                    src="/brand/showcase-mobile-app.svg"
+                    alt="KRAD Cross-Platform Mobile Engineering Interface"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover/mob:scale-[1.03]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060914]/80 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[10px] font-mono text-slate-300 bg-[#090E1C]/85 px-2.5 py-1 rounded-md border border-white/10 backdrop-blur-md">
+                    <span className="text-[#38BDF8] font-bold">Flutter &amp; React Native</span>
+                    <span className="text-emerald-400">60 FPS Native</span>
                   </div>
-                </div>
-
-                {/* Phone Mini Card */}
-                <div className="p-2 rounded-xl bg-white/5 border border-border-subtle space-y-1 text-left">
-                  <div className="flex items-center justify-between text-[10px] font-medium text-white">
-                    <span className="flex items-center gap-1">
-                      <Fingerprint className="w-3 h-3 text-[#38BDF8]" />
-                      Biometric Auth
-                    </span>
-                    <span className="text-emerald-400 font-mono text-[9px]">Verified</span>
-                  </div>
-                  <p className="text-[9px] text-slate-400">120 FPS native render engine with background Bluetooth LE sync.</p>
                 </div>
               </div>
 

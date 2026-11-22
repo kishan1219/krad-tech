@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070B16"/>
+      <stop offset="50%" stop-color="#0A1022"/>
+      <stop offset="100%" stop-color="#050814"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D2FE"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#C084FC"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="750" fill="url(#bgGrad)"/>
+  
+  <!-- Subtle Grid Overlay -->
+  <g stroke="#00D2FE" stroke-opacity="0.04" stroke-width="1">
+    <line x1="0" y1="75" x2="1200" y2="75"/>
+    <line x1="0" y1="150" x2="1200" y2="150"/>
+    <line x1="0" y1="225" x2="1200" y2="225"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="375" x2="1200" y2="375"/>
+    <line x1="0" y1="450" x2="1200" y2="450"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="0" y1="600" x2="1200" y2="600"/>
+    <line x1="0" y1="675" x2="1200" y2="675"/>
+    <line x1="150" y1="0" x2="150" y2="750"/>
+    <line x1="300" y1="0" x2="300" y2="750"/>
+    <line x1="450" y1="0" x2="450" y2="750"/>
+    <line x1="600" y1="0" x2="600" y2="750"/>
+    <line x1="750" y1="0" x2="750" y2="750"/>
+    <line x1="900" y1="0" x2="900" y2="750"/>
+    <line x1="1050" y1="0" x2="1050" y2="750"/>
+  </g>
+
+  <!-- Ambient Glow Blobs -->
+  <circle cx="250" cy="200" r="180" fill="#00D2FE" fill-opacity="0.08" filter="url(#glow)"/>
+  <circle cx="950" cy="550" r="220" fill="#818CF8" fill-opacity="0.07" filter="url(#glow)"/>
+
+  <!-- Main Dashboard Window Frame -->
+  <rect x="40" y="40" width="1120" height="670" rx="20" fill="#090E1D" stroke="#1E293B" stroke-width="1.5"/>
+
+  <!-- Window Header -->
+  <rect x="40" y="40" width="1120" height="54" rx="20" fill="#0D152A"/>
+  <rect x="40" y="74" width="1120" height="20" fill="#0D152A"/>
+  <line x1="40" y1="94" x2="1160" y2="94" stroke="#1E293B" stroke-width="1"/>
+
+  <!-- Traffic Lights -->
+  <circle cx="70" cy="67" r="6" fill="#EF4444" fill-opacity="0.8"/>
+  <circle cx="90" cy="67" r="6" fill="#F59E0B" fill-opacity="0.8"/>
+  <circle cx="110" cy="67" r="6" fill="#10B981" fill-opacity="0.8"/>
+
+  <!-- Window Title -->
+  <text x="140" y="72" font-family="monospace" font-size="13" font-weight="600" fill="#94A3B8">
+    OmniFlow AI // Autonomous WhatsApp &amp; Vector Dispatch Hub [v2.4 Live]
+  </text>
+  <rect x="1000" y="55" width="130" height="26" rx="6" fill="#10B981" fill-opacity="0.12" stroke="#10B981" stroke-width="1"/>
+  <circle cx="1015" cy="68" r="4" fill="#10B981"/>
+  <text x="1027" y="72" font-family="monospace" font-size="11" font-weight="700" fill="#34D399">ROUTING ACTIVE</text>
+
+  <!-- Left Column: Ingest & Triage Feed -->
+  <rect x="65" y="115" width="340" height="570" rx="14" fill="#060A16" stroke="#1E293B" stroke-width="1"/>
+  <text x="85" y="145" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Incoming Webhook Ingestion</text>
+  <text x="85" y="165" font-family="monospace" font-size="11" fill="#64748B">Cloudflare Edge &gt; Meta Cloud API</text>
+
+  <!-- Message Item 1 -->
+  <rect x="80" y="185" width="310" height="95" rx="10" fill="#0C1326" stroke="#00D2FE" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="102" cy="208" r="8" fill="#25D366" fill-opacity="0.2"/>
+  <text x="98" y="212" font-family="monospace" font-size="10" fill="#25D366">W</text>
+  <text x="120" y="210" font-family="monospace" font-size="11" font-weight="700" fill="#FFFFFF">+91 98765 *****</text>
+  <text x="310" y="210" font-family="monospace" font-size="10" fill="#00D2FE">32ms</text>
+  <text x="95" y="235" font-family="sans-serif" font-size="11" fill="#94A3B8">"Need enterprise tier pricing for 50k"</text>
+  <rect x="95" y="248" width="85" height="18" rx="4" fill="#00D2FE" fill-opacity="0.1"/>
+  <text x="102" y="261" font-family="monospace" font-size="9" fill="#00D2FE">Intent: Pricing</text>
+  <rect x="188" y="248" width="70" height="18" rx="4" fill="#10B981" fill-opacity="0.1"/>
+  <text x="195" y="261" font-family="monospace" font-size="9" fill="#34D399">Conf: 0.99</text>
+
+  <!-- Message Item 2 -->
+  <rect x="80" y="295" width="310" height="95" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <circle cx="102" cy="318" r="8" fill="#25D366" fill-opacity="0.2"/>
+  <text x="98" y="322" font-family="monospace" font-size="10" fill="#25D366">W</text>
+  <text x="120" y="320" font-family="monospace" font-size="11" font-weight="700" fill="#FFFFFF">+44 7911 *****</text>
+  <text x="310" y="320" font-family="monospace" font-size="10" fill="#00D2FE">41ms</text>
+  <text x="95" y="345" font-family="sans-serif" font-size="11" fill="#94A3B8">"Schedule technical architecture demo"</text>
+  <rect x="95" y="358" width="95" height="18" rx="4" fill="#818CF8" fill-opacity="0.1"/>
+  <text x="102" y="371" font-family="monospace" font-size="9" fill="#818CF8">Intent: DemoBook</text>
+
+  <!-- Message Item 3 -->
+  <rect x="80" y="405" width="310" height="95" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <circle cx="102" cy="428" r="8" fill="#25D366" fill-opacity="0.2"/>
+  <text x="98" y="432" font-family="monospace" font-size="10" fill="#25D366">W</text>
+  <text x="120" y="430" font-family="monospace" font-size="11" font-weight="700" fill="#FFFFFF">+1 415 555 ****</text>
+  <text x="310" y="430" font-family="monospace" font-size="10" fill="#00D2FE">28ms</text>
+  <text x="95" y="455" font-family="sans-serif" font-size="11" fill="#94A3B8">"API webhook signature mismatch issue"</text>
+  <rect x="95" y="468" width="95" height="18" rx="4" fill="#F59E0B" fill-opacity="0.1"/>
+  <text x="102" y="481" font-family="monospace" font-size="9" fill="#FBBF24">Intent: Support</text>
+
+  <!-- Stat summary pill -->
+  <rect x="80" y="520" width="310" height="145" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <text x="95" y="545" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">Real-time Ingestion Metrics</text>
+  <text x="95" y="575" font-family="monospace" font-size="11" fill="#94A3B8">24h Inbound: <tspan fill="#00D2FE" font-weight="700">42,891 messages</tspan></text>
+  <text x="95" y="600" font-family="monospace" font-size="11" fill="#94A3B8">Automated Resolution: <tspan fill="#34D399" font-weight="700">92.4%</tspan></text>
+  <text x="95" y="625" font-family="monospace" font-size="11" fill="#94A3B8">Mean Response Latency: <tspan fill="#38BDF8" font-weight="700">380ms</tspan></text>
+  <text x="95" y="650" font-family="monospace" font-size="11" fill="#94A3B8">HMAC Signature Failures: <tspan fill="#EF4444" font-weight="700">0 (100% Verified)</tspan></text>
+
+  <!-- Center & Right: Neural Agent Routing Graph & Vector RAG -->
+  <rect x="425" y="115" width="705" height="340" rx="14" fill="#060A16" stroke="#1E293B" stroke-width="1"/>
+  <text x="445" y="145" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Multi-Agent Neural Routing Topology</text>
+  <text x="445" y="165" font-family="monospace" font-size="11" fill="#64748B">LangGraph State Machine // Hybrid Pinecone &amp; pgvector RAG</text>
+
+  <!-- Node: Gateway -->
+  <rect x="460" y="210" width="130" height="60" rx="10" fill="#0C1326" stroke="#00D2FE" stroke-width="1.5"/>
+  <text x="480" y="235" font-family="monospace" font-size="11" font-weight="700" fill="#00D2FE">EDGE GATEWAY</text>
+  <text x="480" y="252" font-family="monospace" font-size="10" fill="#64748B">Cloudflare Worker</text>
+
+  <!-- Flow Line 1 -->
+  <line x1="590" y1="240" x2="660" y2="240" stroke="#00D2FE" stroke-width="2" stroke-dasharray="4,4"/>
+
+  <!-- Node: Intent Router -->
+  <rect x="660" y="200" width="150" height="80" rx="10" fill="#0C1326" stroke="#818CF8" stroke-width="1.5"/>
+  <text x="680" y="228" font-family="monospace" font-size="11" font-weight="700" fill="#818CF8">AGENT ROUTER</text>
+  <text x="680" y="246" font-family="monospace" font-size="10" fill="#94A3B8">Semantic Classifier</text>
+  <text x="680" y="262" font-family="monospace" font-size="9" fill="#34D399">Zero-Hallucination</text>
+
+  <!-- Flow Lines to sub-agents -->
+  <line x1="810" y1="225" x2="890" y2="185" stroke="#818CF8" stroke-width="1.5"/>
+  <line x1="810" y1="240" x2="890" y2="240" stroke="#818CF8" stroke-width="1.5"/>
+  <line x1="810" y1="255" x2="890" y2="295" stroke="#818CF8" stroke-width="1.5"/>
+
+  <!-- Node: Sales Agent -->
+  <rect x="890" y="160" width="150" height="50" rx="8" fill="#0C1326" stroke="#10B981" stroke-width="1"/>
+  <text x="910" y="185" font-family="monospace" font-size="11" font-weight="700" fill="#34D399">Pricing &amp; Quoting</text>
+  <text x="910" y="200" font-family="monospace" font-size="9" fill="#64748B">CRM Synchronized</text>
+
+  <!-- Node: Tech Agent -->
+  <rect x="890" y="220" width="150" height="50" rx="8" fill="#0C1326" stroke="#38BDF8" stroke-width="1"/>
+  <text x="910" y="245" font-family="monospace" font-size="11" font-weight="700" fill="#38BDF8">RAG Knowledge</text>
+  <text x="910" y="260" font-family="monospace" font-size="9" fill="#64748B">Pinecone 1536-dim</text>
+
+  <!-- Node: Booking Agent -->
+  <rect x="890" y="280" width="150" height="50" rx="8" fill="#0C1326" stroke="#C084FC" stroke-width="1"/>
+  <text x="910" y="305" font-family="monospace" font-size="11" font-weight="700" fill="#C084FC">Calendar / Cal.com</text>
+  <text x="910" y="320" font-family="monospace" font-size="9" fill="#64748B">Two-way Sync</text>
+
+  <!-- Bottom Panel: Vector Cosine Retrieval & Guardrail Audit -->
+  <rect x="425" y="475" width="705" height="210" rx="14" fill="#060A16" stroke="#1E293B" stroke-width="1"/>
+  <text x="445" y="505" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Vector Retrieval Telemetry &amp; Guardrail Verification</text>
+
+  <rect x="445" y="525" width="210" height="140" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <text x="460" y="550" font-family="sans-serif" font-size="11" font-weight="600" fill="#94A3B8">Top Retrieved Chunk</text>
+  <text x="460" y="575" font-family="monospace" font-size="10" fill="#00D2FE">doc_id: srv_enterprise_sla</text>
+  <text x="460" y="595" font-family="monospace" font-size="10" fill="#64748B">Cosine Score: <tspan fill="#34D399" font-weight="700">0.9642</tspan></text>
+  <text x="460" y="615" font-family="monospace" font-size="10" fill="#64748B">Namespace: /legal/sla</text>
+  <text x="460" y="640" font-family="monospace" font-size="9" fill="#38BDF8">Status: Verified Cache</text>
+
+  <rect x="670" y="525" width="220" height="140" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <text x="685" y="550" font-family="sans-serif" font-size="11" font-weight="600" fill="#94A3B8">Hallucination Guardrail</text>
+  <text x="685" y="575" font-family="monospace" font-size="10" fill="#34D399">P(Groundedness) = 0.998</text>
+  <text x="685" y="595" font-family="monospace" font-size="10" fill="#64748B">Context Token Count: 1,840</text>
+  <text x="685" y="615" font-family="monospace" font-size="10" fill="#64748B">Safety Filter: 0 violations</text>
+  <text x="685" y="640" font-family="monospace" font-size="9" fill="#34D399">Audit Result: APPROVED</text>
+
+  <rect x="905" y="525" width="205" height="140" rx="10" fill="#0C1326" stroke="#1E293B" stroke-width="1"/>
+  <text x="920" y="550" font-family="sans-serif" font-size="11" font-weight="600" fill="#94A3B8">Client Roundtrip Speed</text>
+  <text x="920" y="585" font-family="sans-serif" font-size="28" font-weight="800" fill="#00D2FE">372ms</text>
+  <text x="920" y="610" font-family="monospace" font-size="10" fill="#34D399">Sub-400ms P95 Target Met</text>
+  <text x="920" y="635" font-family="monospace" font-size="9" fill="#64748B">End-to-End Meta API ACK</text>
+</svg>

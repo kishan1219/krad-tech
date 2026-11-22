@@ -15,17 +15,24 @@ import {
   Globe, 
   Smartphone, 
   Bot, 
-  Layers 
+  Layers,
+  Building2,
+  Users
 } from 'lucide-react';
+import { trackClarityEvent } from '@/lib/clarity';
 
 export default function Navbar() {
   const { t, getOverride } = useLanguage();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [companyDropdownOpen, setCompanyDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  const servicesDropdownRef = useRef<HTMLDivElement>(null);
+  const companyDropdownRef = useRef<HTMLDivElement>(null);
+  const servicesTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const companyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const phoneDisplay = getOverride('contact_phone', COMPANY_DEFAULTS.phone);
 
@@ -41,13 +48,17 @@ export default function Navbar() {
   useEffect(() => {
     setMobileMenuOpen(false);
     setServicesDropdownOpen(false);
+    setCompanyDropdownOpen(false);
   }, [pathname]);
 
-  // Click outside to close dropdown
+  // Click outside to close dropdowns
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(e.target as Node)) {
         setServicesDropdownOpen(false);
+      }
+      if (companyDropdownRef.current && !companyDropdownRef.current.contains(e.target as Node)) {
+        setCompanyDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -55,13 +66,24 @@ export default function Navbar() {
   }, []);
 
   const handleMouseEnterServices = () => {
-    if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+    if (servicesTimeoutRef.current) clearTimeout(servicesTimeoutRef.current);
     setServicesDropdownOpen(true);
   };
 
   const handleMouseLeaveServices = () => {
-    dropdownTimeoutRef.current = setTimeout(() => {
+    servicesTimeoutRef.current = setTimeout(() => {
       setServicesDropdownOpen(false);
+    }, 150);
+  };
+
+  const handleMouseEnterCompany = () => {
+    if (companyTimeoutRef.current) clearTimeout(companyTimeoutRef.current);
+    setCompanyDropdownOpen(true);
+  };
+
+  const handleMouseLeaveCompany = () => {
+    companyTimeoutRef.current = setTimeout(() => {
+      setCompanyDropdownOpen(false);
     }, 150);
   };
 
@@ -92,25 +114,32 @@ export default function Navbar() {
     },
   ];
 
-  const primaryNavLinks = [
-    { name: t.nav.home, href: '/' },
-    { name: t.nav.caseStudies, href: '/case-studies' },
-    { name: t.nav.about, href: '/about' },
-    { name: 'Partnerships', href: '/partnerships' },
-    { name: t.nav.hireResource, href: '/hire-resource' },
-    { name: t.nav.contact, href: '/contact' },
+  const companyItems = [
+    {
+      title: t.nav.about,
+      desc: 'Our mission, leadership & engineering standards',
+      href: '/about',
+      icon: <Building2 className="w-4 h-4 text-[#00D2FE]" />,
+    },
+    {
+      title: t.nav.hireResource,
+      desc: 'Senior dedicated developers & architects for your team',
+      href: '/hire-resource',
+      icon: <Users className="w-4 h-4 text-[#818CF8]" />,
+    },
   ];
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#050814]/90 backdrop-blur-xl border-b border-border-subtle shadow-lg shadow-black/40 py-3'
-          : 'bg-transparent py-5'
+          ? 'bg-[#050814]/92 backdrop-blur-xl border-b border-border-subtle shadow-lg shadow-black/40 py-3'
+          : 'bg-transparent py-4 sm:py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
+          
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group focus:outline-none shrink-0">
             <div className="w-10 h-10 rounded-xl bg-[#0B1120] border border-[#00D2FE]/40 flex items-center justify-center shadow-[0_0_15px_-3px_rgba(0,210,254,0.3)] group-hover:border-[#00D2FE] group-hover:shadow-cyan-glow transition-all">
@@ -131,22 +160,12 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-            <Link
-              href="/"
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                pathname === '/'
-                  ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold shadow-[inset_0_0_12px_rgba(0,210,254,0.15)]'
-                  : 'text-slate-300 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {t.nav.home}
-            </Link>
-
-            {/* Services with Dropdown Menu */}
+          {/* Decluttered Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2">
+            
+            {/* 1. Services with Dropdown Menu */}
             <div 
-              ref={dropdownRef}
+              ref={servicesDropdownRef}
               className="relative"
               onMouseEnter={handleMouseEnterServices}
               onMouseLeave={handleMouseLeaveServices}
@@ -154,9 +173,9 @@ export default function Navbar() {
               <Link
                 href="/services"
                 onClick={() => setServicesDropdownOpen(false)}
-                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                className={`inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   pathname.startsWith('/services')
-                    ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold'
+                    ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold shadow-[inset_0_0_12px_rgba(0,210,254,0.15)]'
                     : 'text-slate-300 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -164,7 +183,6 @@ export default function Navbar() {
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${servicesDropdownOpen ? 'rotate-180 text-[#00D2FE]' : 'text-slate-400'}`} />
               </Link>
 
-              {/* Mega Flyout Menu */}
               {servicesDropdownOpen && (
                 <div className="absolute top-full left-0 mt-2 w-80 p-2.5 rounded-2xl bg-[#090D1A]/98 border border-[#00D2FE]/30 backdrop-blur-2xl shadow-2xl shadow-black/80 animate-in fade-in zoom-in-95 duration-150 z-50">
                   <div className="space-y-1">
@@ -204,23 +222,91 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Other Nav Links */}
-            {primaryNavLinks.slice(1).map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                    isActive
-                      ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold shadow-[inset_0_0_12px_rgba(0,210,254,0.15)]'
-                      : 'text-slate-300 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
+            {/* 2. Case Studies */}
+            <Link
+              href="/case-studies"
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                pathname === '/case-studies'
+                  ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold shadow-[inset_0_0_12px_rgba(0,210,254,0.15)]'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              {t.nav.caseStudies}
+            </Link>
+
+            {/* 3. Partnerships (With subtle MOA badge) */}
+            <Link
+              href="/partnerships"
+              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                pathname === '/partnerships'
+                  ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold shadow-[inset_0_0_12px_rgba(0,210,254,0.15)]'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <span>Partnerships</span>
+              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#00D2FE]/15 text-[#00D2FE] border border-[#00D2FE]/30 font-bold">
+                MOA
+              </span>
+            </Link>
+
+            {/* 4. Company Dropdown (About Us & Dedicated Developers) */}
+            <div 
+              ref={companyDropdownRef}
+              className="relative"
+              onMouseEnter={handleMouseEnterCompany}
+              onMouseLeave={handleMouseLeaveCompany}
+            >
+              <button
+                type="button"
+                className={`inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  pathname === '/about' || pathname === '/hire-resource'
+                    ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold shadow-[inset_0_0_12px_rgba(0,210,254,0.15)]'
+                    : 'text-slate-300 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>Company</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${companyDropdownOpen ? 'rotate-180 text-[#00D2FE]' : 'text-slate-400'}`} />
+              </button>
+
+              {companyDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-72 p-2 rounded-2xl bg-[#090D1A]/98 border border-[#00D2FE]/30 backdrop-blur-2xl shadow-2xl shadow-black/80 animate-in fade-in zoom-in-95 duration-150 z-50">
+                  <div className="space-y-1">
+                    {companyItems.map((item) => (
+                      <Link
+                        key={item.title}
+                        href={item.href}
+                        onClick={() => setCompanyDropdownOpen(false)}
+                        className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/5 transition-colors group"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-[#0B1120] border border-border-subtle group-hover:border-[#00D2FE]/50 flex items-center justify-center shrink-0 transition-colors">
+                          {item.icon}
+                        </div>
+                        <div>
+                          <span className="text-xs font-semibold text-white group-hover:text-[#00D2FE] transition-colors block">
+                            {item.title}
+                          </span>
+                          <span className="text-[10px] text-slate-400 line-clamp-1">
+                            {item.desc}
+                          </span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 5. Contact Us */}
+            <Link
+              href="/contact"
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                pathname === '/contact'
+                  ? 'text-[#00D2FE] bg-[#00D2FE]/10 font-semibold shadow-[inset_0_0_12px_rgba(0,210,254,0.15)]'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              {t.nav.contact}
+            </Link>
           </nav>
 
           {/* Right Action Icons & Buttons */}
@@ -230,8 +316,9 @@ export default function Navbar() {
             {/* Telephone Direct Call */}
             <a
               href={`tel:${COMPANY_DEFAULTS.phoneRaw}`}
+              onClick={() => trackClarityEvent('phone_call_clicked', { source: 'navbar' })}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-[#00D2FE] hover:bg-white/5 transition-all border border-border-subtle"
-              title="Call KRAD Technology"
+              title={`Direct Telephone: ${phoneDisplay}`}
             >
               <Phone className="w-3.5 h-3.5 text-[#00D2FE]" />
               <span className="hidden xl:inline-block font-mono text-[11px]">{phoneDisplay}</span>
@@ -240,6 +327,7 @@ export default function Navbar() {
             {/* Start Project CTA Button */}
             <Link
               href="/project-requirements"
+              onClick={() => trackClarityEvent('start_project_nav_clicked')}
               className="group relative inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-slate-900 bg-[#00D2FE] hover:bg-[#38BDF8] shadow-cyan-glow transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             >
               <span>{t.nav.startProject}</span>
@@ -293,22 +381,50 @@ export default function Navbar() {
               </div>
             </div>
 
-            {primaryNavLinks.slice(1).map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'text-[#00D2FE] bg-[#00D2FE]/15 font-semibold'
-                      : 'text-slate-200 hover:bg-white/5'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
+            <Link
+              href="/case-studies"
+              className={`block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                pathname === '/case-studies' ? 'text-[#00D2FE] bg-[#00D2FE]/15 font-semibold' : 'text-slate-200 hover:bg-white/5'
+              }`}
+            >
+              {t.nav.caseStudies}
+            </Link>
+
+            <Link
+              href="/partnerships"
+              className={`block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                pathname === '/partnerships' ? 'text-[#00D2FE] bg-[#00D2FE]/15 font-semibold' : 'text-slate-200 hover:bg-white/5'
+              }`}
+            >
+              Partnerships (MOA)
+            </Link>
+
+            <Link
+              href="/about"
+              className={`block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                pathname === '/about' ? 'text-[#00D2FE] bg-[#00D2FE]/15 font-semibold' : 'text-slate-200 hover:bg-white/5'
+              }`}
+            >
+              {t.nav.about}
+            </Link>
+
+            <Link
+              href="/hire-resource"
+              className={`block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                pathname === '/hire-resource' ? 'text-[#00D2FE] bg-[#00D2FE]/15 font-semibold' : 'text-slate-200 hover:bg-white/5'
+              }`}
+            >
+              {t.nav.hireResource}
+            </Link>
+
+            <Link
+              href="/contact"
+              className={`block px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                pathname === '/contact' ? 'text-[#00D2FE] bg-[#00D2FE]/15 font-semibold' : 'text-slate-200 hover:bg-white/5'
+              }`}
+            >
+              {t.nav.contact}
+            </Link>
           </div>
 
           <div className="pt-3 border-t border-border-subtle space-y-2.5">

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <defs>
+    <radialGradient id="heroGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#00D2FE" stop-opacity="0.18"/>
+      <stop offset="40%" stop-color="#3B82F6" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#050814" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gridBeam" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00D2FE" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#818CF8" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="#050814"/>
+  <rect width="1920" height="1080" fill="url(#heroGlow)"/>
+
+  <!-- Rotating Cybernetic Rings -->
+  <g transform="translate(1350, 480)">
+    <!-- Ring 1 -->
+    <circle cx="0" cy="0" r="280" fill="none" stroke="#00D2FE" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="12,18">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="80s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Ring 2 -->
+    <circle cx="0" cy="0" r="380" fill="none" stroke="#818CF8" stroke-opacity="0.12" stroke-width="1.5" stroke-dasharray="8,24">
+      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="120s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Ring 3 -->
+    <circle cx="0" cy="0" r="480" fill="none" stroke="#00D2FE" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="20,40">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="160s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Core glowing node -->
+    <circle cx="0" cy="0" r="90" fill="#0A1022" stroke="#00D2FE" stroke-opacity="0.4" stroke-width="2"/>
+    <circle cx="0" cy="0" r="6" fill="#00D2FE">
+      <animate attributeName="r" values="5;8;5" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="fill-opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Satellite Orbiting Pulses -->
+    <g>
+      <circle cx="280" cy="0" r="5" fill="#38BDF8"/>
+      <circle cx="-198" cy="198" r="4" fill="#10B981"/>
+      <circle cx="0" cy="-280" r="4" fill="#C084FC"/>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="40s" repeatCount="indefinite"/>
+    </g>
+  </g>
+
+  <!-- Perspective Hexagonal Grid Floor -->
+  <g stroke="#00D2FE" stroke-opacity="0.04" stroke-width="1">
+    <line x1="0" y1="900" x2="1920" y2="900"/>
+    <line x1="0" y1="940" x2="1920" y2="940"/>
+    <line x1="0" y1="990" x2="1920" y2="990"/>
+    <line x1="0" y1="1050" x2="1920" y2="1050"/>
+    <line x1="960" y1="800" x2="200" y2="1080"/>
+    <line x1="960" y1="800" x2="600" y2="1080"/>
+    <line x1="960" y1="800" x2="960" y2="1080"/>
+    <line x1="960" y1="800" x2="1320" y2="1080"/>
+    <line x1="960" y1="800" x2="1720" y2="1080"/>
+  </g>
+</svg>

@@ -6,6 +6,7 @@ import {
   Handshake,
   Building2,
   Globe2,
+  Globe,
   CheckCircle2,
   Copy,
   Check,
@@ -17,6 +18,11 @@ import {
   MessageCircle,
   Loader2,
   AlertCircle,
+  Mail,
+  Phone,
+  MapPin,
+  TrendingUp,
+  UserCheck,
 } from 'lucide-react';
 import SpotlightCard from '@/components/ui/SpotlightCard';
 import { COMPANY_DEFAULTS } from '@/lib/constants';
@@ -520,152 +526,194 @@ export default function PartnershipsClient() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Company / Agency Name <span className="text-[#00D2FE]">*</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* 1. Company Name */}
+                <div className="space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
+                    <Building2 className="w-3.5 h-3.5 text-[#00D2FE]" />
+                    <span>Legal Corporate Entity</span>
+                    <span className="text-[#00D2FE]">*</span>
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={formState.company_name}
-                    onChange={(e) => setFormState({ ...formState, company_name: e.target.value })}
-                    placeholder="e.g. Nexus Digital Group Ltd"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      value={formState.company_name}
+                      onChange={(e) => setFormState({ ...formState, company_name: e.target.value })}
+                      placeholder="e.g. Acme Global Technologies Inc."
+                      className="w-full px-4 py-3 rounded-xl bg-[#080D1A] border border-white/10 hover:border-white/20 focus:border-[#00D2FE] focus:ring-1 focus:ring-[#00D2FE]/25 text-white text-xs outline-none transition-all placeholder:text-slate-500"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Corporate Website URL <span className="text-[#00D2FE]">*</span>
+                {/* 2. Corporate URL */}
+                <div className="space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
+                    <Globe className="w-3.5 h-3.5 text-[#00D2FE]" />
+                    <span>Corporate Domain / Website</span>
+                    <span className="text-[#00D2FE]">*</span>
                   </label>
-                  <input
-                    type="url"
-                    required
-                    value={formState.website_url}
-                    onChange={(e) => setFormState({ ...formState, website_url: e.target.value })}
-                    placeholder="https://nexusgroup.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none font-mono"
-                  />
+                  <div className="relative">
+                    <input
+                      type="url"
+                      required
+                      value={formState.website_url}
+                      onChange={(e) => setFormState({ ...formState, website_url: e.target.value })}
+                      placeholder="https://acmeglobal.com"
+                      className="w-full px-4 py-3 rounded-xl bg-[#080D1A] border border-white/10 hover:border-white/20 focus:border-[#00D2FE] focus:ring-1 focus:ring-[#00D2FE]/25 text-white text-xs outline-none font-mono transition-all placeholder:text-slate-500"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Authorized Representative Name <span className="text-[#00D2FE]">*</span>
+                {/* 3. Signatory Name */}
+                <div className="space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
+                    <UserCheck className="w-3.5 h-3.5 text-[#00D2FE]" />
+                    <span>Authorized Executive Signatory</span>
+                    <span className="text-[#00D2FE]">*</span>
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={formState.contact_name}
-                    onChange={(e) => setFormState({ ...formState, contact_name: e.target.value })}
-                    placeholder="e.g. Alexander Vance (Managing Director)"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      value={formState.contact_name}
+                      onChange={(e) => setFormState({ ...formState, contact_name: e.target.value })}
+                      placeholder="e.g. Alexander Vance, Managing Director"
+                      className="w-full px-4 py-3 rounded-xl bg-[#080D1A] border border-white/10 hover:border-white/20 focus:border-[#00D2FE] focus:ring-1 focus:ring-[#00D2FE]/25 text-white text-xs outline-none transition-all placeholder:text-slate-500"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Official Work Email <span className="text-[#00D2FE]">*</span>
+                {/* 4. Work Email */}
+                <div className="space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
+                    <Mail className="w-3.5 h-3.5 text-[#00D2FE]" />
+                    <span>Corporate Official Email</span>
+                    <span className="text-[#00D2FE]">*</span>
                   </label>
-                  <input
-                    type="email"
-                    required
-                    value={formState.work_email}
-                    onChange={(e) => setFormState({ ...formState, work_email: e.target.value })}
-                    placeholder="alex@nexusgroup.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none font-mono"
-                  />
+                  <div className="relative">
+                    <input
+                      type="email"
+                      required
+                      value={formState.work_email}
+                      onChange={(e) => setFormState({ ...formState, work_email: e.target.value })}
+                      placeholder="alex.vance@acmeglobal.com"
+                      className="w-full px-4 py-3 rounded-xl bg-[#080D1A] border border-white/10 hover:border-white/20 focus:border-[#00D2FE] focus:ring-1 focus:ring-[#00D2FE]/25 text-white text-xs outline-none font-mono transition-all placeholder:text-slate-500"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Phone / WhatsApp Number <span className="text-[#00D2FE]">*</span>
+                {/* 5. Phone / WhatsApp */}
+                <div className="space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
+                    <Phone className="w-3.5 h-3.5 text-[#00D2FE]" />
+                    <span>Executive Direct Dial / WhatsApp</span>
+                    <span className="text-[#00D2FE]">*</span>
                   </label>
-                  <input
-                    type="tel"
-                    required
-                    value={formState.phone}
-                    onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                    placeholder="+1 415 555 2671 or +91 98765 43210"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none font-mono"
-                  />
+                  <div className="relative">
+                    <input
+                      type="tel"
+                      required
+                      value={formState.phone}
+                      onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
+                      placeholder="+1 (555) 019-2834 or +91 98765 43210"
+                      className="w-full px-4 py-3 rounded-xl bg-[#080D1A] border border-white/10 hover:border-white/20 focus:border-[#00D2FE] focus:ring-1 focus:ring-[#00D2FE]/25 text-white text-xs outline-none font-mono transition-all placeholder:text-slate-500"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Headquarters Country <span className="text-[#00D2FE]">*</span>
+                {/* 6. Jurisdiction */}
+                <div className="space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
+                    <MapPin className="w-3.5 h-3.5 text-[#00D2FE]" />
+                    <span>Headquarters Jurisdiction / Country</span>
+                    <span className="text-[#00D2FE]">*</span>
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={formState.country}
-                    onChange={(e) => setFormState({ ...formState, country: e.target.value })}
-                    placeholder="e.g. United States, Germany, India, UAE"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      value={formState.country}
+                      onChange={(e) => setFormState({ ...formState, country: e.target.value })}
+                      placeholder="e.g. United States, Germany, India, United Kingdom"
+                      className="w-full px-4 py-3 rounded-xl bg-[#080D1A] border border-white/10 hover:border-white/20 focus:border-[#00D2FE] focus:ring-1 focus:ring-[#00D2FE]/25 text-white text-xs outline-none transition-all placeholder:text-slate-500"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Partnership Track <span className="text-[#00D2FE]">*</span>
+                {/* 7. Partnership Track */}
+                <div className="space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
+                    <Award className="w-3.5 h-3.5 text-[#00D2FE]" />
+                    <span>Association Classification</span>
+                    <span className="text-[#00D2FE]">*</span>
                   </label>
                   <select
                     value={formState.partnership_tier}
                     onChange={(e) => setFormState({ ...formState, partnership_tier: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none"
+                    className="w-full px-4 py-3 rounded-xl bg-[#080D1A] border border-white/10 hover:border-white/20 focus:border-[#00D2FE] focus:ring-1 focus:ring-[#00D2FE]/25 text-white text-xs outline-none transition-all cursor-pointer"
                   >
-                    <option value="Agency Co-Delivery Partner">Agency Co-Delivery Partner</option>
-                    <option value="Enterprise Solution Integrator">Enterprise Solution Integrator</option>
-                    <option value="SaaS Technology Alliance">SaaS Technology Alliance</option>
-                    <option value="Regional Referral Channel">Regional Referral Channel</option>
+                    <option value="Agency Co-Delivery Partner">Agency Co-Delivery Partner (Client Bandwidth Expansion)</option>
+                    <option value="Enterprise Solution Integrator">Enterprise Solution Integrator (Joint RFP & System Architecture)</option>
+                    <option value="SaaS Technology Alliance">SaaS Technology Alliance (OEM & Ecosystem Interoperability)</option>
+                    <option value="Regional Referral Channel">Regional Referral Channel (Verified Bilateral Originator)</option>
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Estimated Annual Delivery / Deal Volume
+                {/* 8. Deal Volume */}
+                <div className="space-y-1.5">
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
+                    <TrendingUp className="w-3.5 h-3.5 text-[#00D2FE]" />
+                    <span>Projected Annual Delivery / Co-Sell Volume</span>
                   </label>
                   <select
                     value={formState.annual_volume}
                     onChange={(e) => setFormState({ ...formState, annual_volume: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none"
+                    className="w-full px-4 py-3 rounded-xl bg-[#080D1A] border border-white/10 hover:border-white/20 focus:border-[#00D2FE] focus:ring-1 focus:ring-[#00D2FE]/25 text-white text-xs outline-none transition-all cursor-pointer"
                   >
-                    <option value="< $50,000 / ₹40 Lakhs">&lt; $50,000 / ₹40 Lakhs</option>
-                    <option value="$50,000 – $250,000 / ₹40L – ₹2 Cr">$50,000 – $250,000 / ₹40L – ₹2 Cr</option>
-                    <option value="$250,000 – $1,000,000 / ₹2 Cr – ₹8 Cr">$250,000 – $1,000,000 / ₹2 Cr – ₹8 Cr</option>
-                    <option value="$1,000,000+ / ₹8 Cr+">$1,000,000+ / ₹8 Cr+</option>
+                    <option value="< $50,000 / ₹40 Lakhs">Tier I: Growth Track (&lt; $50,000 / ₹40 Lakhs)</option>
+                    <option value="$50,000 – $250,000 / ₹40L – ₹2 Cr">Tier II: Mid-Market Scale ($50,000 – $250,000 / ₹40L – ₹2 Cr)</option>
+                    <option value="$250,000 – $1,000,000 / ₹2 Cr – ₹8 Cr">Tier III: Enterprise Co-Delivery ($250,000 – $1,000,000 / ₹2 Cr – ₹8 Cr)</option>
+                    <option value="$1,000,000+ / ₹8 Cr+">Tier IV: Strategic Institutional ($1,000,000+ / ₹8 Cr+)</option>
                   </select>
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
-                  Synergy, Capabilities & Proposed Joint Offering
+              {/* Synergies */}
+              <div className="space-y-1.5">
+                <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-200">
+                  <Layers className="w-3.5 h-3.5 text-[#00D2FE]" />
+                  <span>Strategic Synergies, Target Client Portfolios & Joint Capabilities</span>
                 </label>
                 <textarea
                   rows={4}
                   required
                   value={formState.synergies_notes}
                   onChange={(e) => setFormState({ ...formState, synergies_notes: e.target.value })}
-                  placeholder="Describe your current client portfolio, typical tech stacks, and how a bilateral MOA association with KRAD Technology creates strategic value..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none resize-none leading-relaxed"
+                  placeholder="Outline your organization's core technical strengths, target industry verticals, and how an association with KRAD Technology accelerates mutual delivery capacity..."
+                  className="w-full px-4 py-3 rounded-xl bg-[#080D1A] border border-white/10 hover:border-white/20 focus:border-[#00D2FE] focus:ring-1 focus:ring-[#00D2FE]/25 text-white text-xs outline-none resize-none leading-relaxed transition-all placeholder:text-slate-500"
                 />
               </div>
 
               {/* MOA Confirmation Checkbox */}
-              <div className="p-4 rounded-xl bg-[#050814] border border-[#00D2FE]/20">
-                <label className="flex items-start gap-3 cursor-pointer select-none">
+              <div className="p-5 rounded-xl bg-[#080D1A] border border-[#00D2FE]/30 shadow-lg">
+                <label className="flex items-start gap-3.5 cursor-pointer select-none">
                   <input
                     type="checkbox"
                     required
                     checked={formState.moa_agreement_ready}
                     onChange={(e) => setFormState({ ...formState, moa_agreement_ready: e.target.checked })}
-                    className="mt-1 rounded border-white/20 bg-[#050814] text-[#00D2FE] focus:ring-[#00D2FE]"
+                    className="mt-1 rounded border-white/20 bg-[#050814] text-[#00D2FE] focus:ring-[#00D2FE] w-4 h-4"
                   />
-                  <span className="text-xs text-slate-300 leading-relaxed">
-                    <strong className="text-white block mb-0.5">Memorandum of Association (MOA) Readiness:</strong>
-                    I confirm that I am an authorized corporate officer with authority to execute a bilateral Memorandum of Association (MOA), Non-Disclosure Agreement (NDA), and mutual delivery terms with KRAD Technology.
-                  </span>
+                  <div className="space-y-1">
+                    <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                      <ShieldCheck className="w-4 h-4 text-[#00D2FE]" />
+                      <span>Memorandum of Association (MOA) Corporate Signatory Confirmation</span>
+                    </span>
+                    <p className="text-[11px] text-slate-300 leading-relaxed">
+                      I certify that I am an authorized corporate officer with full legal authority to execute bilateral Non-Disclosure (NDA) and Memorandum of Association (MOA) governance agreements with KRAD Technology.
+                    </p>
+                  </div>
                 </label>
               </div>
 

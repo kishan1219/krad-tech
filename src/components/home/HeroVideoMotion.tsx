@@ -162,7 +162,17 @@ export default function HeroVideoMotion() {
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
-      {/* 1. Low-overhead HTML5 Video Background */}
+      {/* 1. Ambient Vector Cybernetic Mesh Layer */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
+        style={{
+          backgroundImage: 'url(/brand/hero-video-loop.svg)',
+          opacity: isPlaying ? 0.45 : 0.2,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2. Low-overhead HTML5 Video Background with Animated SVG Poster */}
       <video
         ref={videoRef}
         autoPlay
@@ -170,10 +180,10 @@ export default function HeroVideoMotion() {
         muted
         playsInline
         preload="none"
-        poster="/brand/hero-mesh-poster.svg"
+        poster="/brand/hero-video-loop.svg"
         onCanPlay={() => setVideoLoaded(true)}
         className={`w-full h-full object-cover transition-opacity duration-1000 ${
-          videoLoaded && isPlaying ? 'opacity-25' : 'opacity-0'
+          videoLoaded && isPlaying ? 'opacity-30' : 'opacity-0'
         }`}
         aria-hidden="true"
       >
@@ -181,11 +191,11 @@ export default function HeroVideoMotion() {
         <source src="/brand/hero-loop.mp4" type="video/mp4; codecs=avc1" />
       </video>
 
-      {/* 2. Hardware-accelerated Particle Wave Fallback Canvas */}
+      {/* 3. Hardware-accelerated Pointer-Reactive Canvas Particle Engine */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ opacity: isPlaying ? 0.85 : 0.2 }}
+        style={{ opacity: isPlaying ? 0.9 : 0.2 }}
       />
 
       {/* 3. Multi-layer Radial Contrast Masks */}
