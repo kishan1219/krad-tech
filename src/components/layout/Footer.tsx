@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { COMPANY_DEFAULTS, SERVICE_CATEGORIES } from '@/lib/constants';
-import { Phone, Mail, MessageCircle, MapPin, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { Phone, Mail, MessageCircle, MapPin, ArrowUpRight } from 'lucide-react';
 
 export default function Footer() {
   const { t, getOverride } = useLanguage();
@@ -145,15 +145,6 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/about#security" className="hover:text-white transition-colors">Security Architecture</Link>
-              </li>
-              <li className="pt-4">
-                <Link
-                  href="/admin"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-card border border-border-subtle hover:border-[#00D2FE]/40 text-slate-300 hover:text-[#00D2FE] transition-all text-[11px]"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#00D2FE]" />
-                  <span>{t.nav.admin}</span>
-                </Link>
               </li>
             </ul>
           </div>

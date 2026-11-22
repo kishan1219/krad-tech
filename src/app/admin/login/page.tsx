@@ -34,6 +34,11 @@ export default function AdminLoginPage() {
         throw new Error(data.error || 'Invalid username or password');
       }
 
+      if (data.token) {
+        sessionStorage.setItem('krad_admin_token', data.token);
+        localStorage.setItem('krad_admin_token', data.token);
+      }
+
       router.push('/admin');
       router.refresh();
     } catch (err: unknown) {

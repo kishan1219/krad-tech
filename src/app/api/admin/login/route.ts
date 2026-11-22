@@ -14,7 +14,11 @@ export async function POST(req: NextRequest) {
     }
 
     const secretKey = process.env.ADMIN_SECRET_KEY || 'krad_admin_secure_key_2026';
-    const response = NextResponse.json({ success: true, message: 'Authentication successful' });
+    const response = NextResponse.json({
+      success: true,
+      message: 'Authentication successful',
+      token: secretKey,
+    });
 
     // Set secure HTTP-only admin cookie
     response.cookies.set('krad_admin_token', secretKey, {

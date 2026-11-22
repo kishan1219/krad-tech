@@ -11,7 +11,6 @@ import {
   Menu, 
   X, 
   ArrowUpRight, 
-  ShieldCheck, 
   ChevronDown, 
   Globe, 
   Smartphone, 
@@ -326,14 +325,6 @@ export default function Navbar() {
             >
               <span>{t.nav.startProject}</span>
               <ArrowUpRight className="w-4 h-4" />
-            </Link>
-
-            <Link
-              href="/admin"
-              className="flex items-center justify-center gap-1.5 w-full py-2 text-[11px] text-slate-400 hover:text-[#00D2FE] transition-colors"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>{t.nav.admin}</span>
             </Link>
           </div>
         </div>
