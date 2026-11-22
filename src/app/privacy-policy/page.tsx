@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-2">
             <h2 className="text-base font-bold text-white">1. Introduction</h2>
             <p>
-              KRAD Technology (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting the privacy, confidentiality, and security of our website visitors, clients, and prospective partners. This Privacy Policy outlines our practices regarding data collection, processing, and protection when you interact with our website (<a href="https://krad-tech.onrender.com" className="text-[#00D2FE] underline">krad-tech.onrender.com</a>) and our digital services.
+              KRAD Technology (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting the privacy, confidentiality, and security of our website visitors, clients, and prospective partners. This Privacy Policy outlines our practices regarding data collection, processing, and protection when you interact with our website (<a href="https://kradtechnology.com" className="text-[#00D2FE] underline">kradtechnology.com</a>) and our digital services.
             </p>
           </section>
 

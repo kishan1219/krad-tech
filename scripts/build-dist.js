@@ -376,7 +376,7 @@ export default {
       if (request.method === 'POST') {
         try {
           // If a custom external backend is explicitly set and reachable, try it first
-          if (env.RENDER_BACKEND_URL && !env.RENDER_BACKEND_URL.includes('onrender.com')) {
+          if (env.RENDER_BACKEND_URL && !env.RENDER_BACKEND_URL.includes('onrender.com') && !env.RENDER_BACKEND_URL.includes('kradtechnology.com') && !env.RENDER_BACKEND_URL.includes(url.hostname)) {
             try {
               const backendUrl = new URL(url.pathname + url.search, env.RENDER_BACKEND_URL);
               const backendRes = await fetch(new Request(backendUrl, request));
@@ -447,14 +447,16 @@ export default {
     // 7. Fallback for any other API route
     // -------------------------------------------------------------
     if (url.pathname.startsWith('/api/')) {
-      try {
-        const backendBase = env.RENDER_BACKEND_URL || 'https://krad-tech.onrender.com';
-        const backendUrl = new URL(url.pathname + url.search, backendBase);
-        const res = await fetch(new Request(backendUrl, request));
-        if (res.status !== 502 && res.status !== 503) {
-          return res;
-        }
-      } catch (e) {}
+      if (env.RENDER_BACKEND_URL && !env.RENDER_BACKEND_URL.includes('onrender.com') && !env.RENDER_BACKEND_URL.includes('kradtechnology.com') && !env.RENDER_BACKEND_URL.includes(url.hostname)) {
+        try {
+          const backendBase = env.RENDER_BACKEND_URL;
+          const backendUrl = new URL(url.pathname + url.search, backendBase);
+          const res = await fetch(new Request(backendUrl, request));
+          if (res.status !== 502 && res.status !== 503) {
+            return res;
+          }
+        } catch (e) {}
+      }
 
       return new Response(JSON.stringify({ success: true, message: 'API acknowledged' }), {
         status: 200,

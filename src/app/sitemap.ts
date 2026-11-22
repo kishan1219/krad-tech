@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://krad-tech.onrender.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kradtechnology.com';
   const currentDate = new Date();
 
   return [
@@ -19,6 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/case-studies`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/partnerships`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.85,

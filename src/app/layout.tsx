@@ -6,7 +6,7 @@ import Footer from '@/components/layout/Footer';
 import WhatsAppPill from '@/components/layout/WhatsAppPill';
 import ClarityWebVitals from '@/components/analytics/ClarityWebVitals';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://krad-tech.onrender.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kradtechnology.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -91,7 +91,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const currentSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://krad-tech.onrender.com';
+  const currentSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kradtechnology.com';
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',

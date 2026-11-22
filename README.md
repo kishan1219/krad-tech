@@ -1,7 +1,8 @@
-# krad-tech
+# KRAD Technology (kradtechnology.com)
 
-> **KRAD Technology** — Corporate Web Platform & Digital Engineering Hub.
-> WhatsApp Business API | AI Chatbots | Automation | AI Voice
+> **KRAD Technology** — Enterprise Digital Engineering & Scalable Cloud Solutions.
+> Official Website: https://kradtechnology.com
+> WhatsApp Business API | AI Chatbots | Enterprise Automation | Cloud Platforms
 
 ---
 

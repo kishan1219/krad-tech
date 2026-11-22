@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Strategic Technology Partnerships & MOA Program | KRAD Technology',
     description:
       'Scale your agency, integrate enterprise SaaS, and access verified KRAD engineering squads under bilateral MOA agreements.',
-    url: 'https://krad-tech.guptakishan805.workers.dev/partnerships',
+    url: 'https://kradtechnology.com/partnerships',
   },
 };
 

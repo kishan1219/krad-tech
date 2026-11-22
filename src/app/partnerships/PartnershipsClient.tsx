@@ -54,7 +54,7 @@ export default function PartnershipsClient() {
 
   const getEmbedCode = () => {
     return `<!-- KRAD Technology Verified Partner Badge -->
-<a href="https://krad-tech.guptakishan805.workers.dev/partnerships?verify=${badgeVerificationId}" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none;">
+<a href="https://kradtechnology.com/partnerships?verify=${badgeVerificationId}" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none;">
   <div style="display:inline-flex;align-items:center;gap:10px;padding:8px 14px;background:#0A0F1D;border:1px solid #00D2FE;border-radius:12px;font-family:system-ui,-apple-system,sans-serif;color:#FFFFFF;box-shadow:0 0 16px rgba(0,210,254,0.15);">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00D2FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>

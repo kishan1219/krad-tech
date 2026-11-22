@@ -18,6 +18,7 @@ export const COMPANY_DEFAULTS = {
   whatsappRaw: '919111021438',
   whatsappUrl: 'https://wa.me/919111021438?text=Hello%20KRAD%20Technology%2C%20I%20would%20like%20to%20discuss%20a%20digital%20project.',
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'contact@kradtechnology.com',
+  website: process.env.NEXT_PUBLIC_SITE_URL || 'https://kradtechnology.com',
   workingHours: 'Mon - Sat: 9:00 AM - 7:00 PM IST',
   address: 'Indore, MP, India (Serving Global Clients)',
 };
