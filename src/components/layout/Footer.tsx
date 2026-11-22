@@ -146,6 +146,12 @@ export default function Footer() {
               <li>
                 <Link href="/about#security" className="hover:text-white transition-colors">Security Architecture</Link>
               </li>
+              <li>
+                <Link href="/partnerships" className="hover:text-white transition-colors flex items-center gap-1.5">
+                  <span>Partnerships & MOA</span>
+                  <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#00D2FE]/10 text-[#00D2FE]">Badge</span>
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

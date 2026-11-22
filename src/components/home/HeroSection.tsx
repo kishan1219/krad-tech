@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import Hero3DContainer from '../3d/Hero3DContainer';
+import HeroVideoMotion from './HeroVideoMotion';
 import { COMPANY_DEFAULTS } from '@/lib/constants';
 import { ArrowUpRight, Phone, MessageCircle, ShieldCheck, Sparkles } from 'lucide-react';
 
@@ -16,6 +17,9 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center pt-32 pb-24 overflow-hidden">
+      {/* 0.8s Ultra-Low Overhead Video & Motion Background */}
+      <HeroVideoMotion />
+
       {/* Background Layered Radial Mesh Glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[600px] bg-gradient-radial from-[#00D2FE]/15 via-[#6366F1]/8 to-transparent pointer-events-none filter blur-3xl" />
       <div className="absolute top-1/3 -left-40 w-96 h-96 bg-[#00D2FE]/10 rounded-full filter blur-3xl pointer-events-none" />

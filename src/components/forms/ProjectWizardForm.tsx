@@ -2,7 +2,20 @@
 
 import React, { useState } from 'react';
 import { SERVICE_CATEGORIES, TIMELINE_OPTIONS } from '@/lib/constants';
-import { CheckCircle2, ArrowRight, ArrowLeft, Loader2, AlertCircle, MessageCircle, Globe } from 'lucide-react';
+import { 
+  CheckCircle2, 
+  ArrowRight, 
+  ArrowLeft, 
+  Loader2, 
+  AlertCircle, 
+  MessageCircle, 
+  Globe,
+  UploadCloud,
+  FileText,
+  X,
+  Paperclip,
+  Sliders 
+} from 'lucide-react';
 
 export default function ProjectWizardForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -42,6 +55,11 @@ export default function ProjectWizardForm() {
     ],
   };
 
+  const [budgetType, setBudgetType] = useState<'tier' | 'custom'>('tier');
+  const [customBudget, setCustomBudget] = useState('');
+  const [uploadedFile, setUploadedFile] = useState<{ name: string; size: number; data?: string } | null>(null);
+  const [referenceUrl, setReferenceUrl] = useState('');
+
   // Form State
   const [formData, setFormData] = useState({
     // Step 1
@@ -64,12 +82,42 @@ export default function ProjectWizardForm() {
     estimated_budget: '$5,000 – $10,000',
     timeline: '1–3 Months',
     priority: 'Standard',
+    budget_type: 'tier',
+    custom_budget_value: '',
 
     // Step 5
     scope_notes: '',
+    reference_url: '',
+    plan_document_name: '',
+    plan_document_size: '',
+    plan_document_data: '',
     privacyConsent: false,
     _hp_company_field: '', // Honeypot
   });
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 15 * 1024 * 1024) {
+      setErrorMsg('File size exceeds the 15 MB limit. Please attach a smaller file or link to a cloud drive.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = typeof reader.result === 'string' ? reader.result : '';
+      setUploadedFile({
+        name: file.name,
+        size: file.size,
+        data: base64,
+      });
+      updateField('plan_document_name', file.name);
+      updateField('plan_document_size', `${(file.size / (1024 * 1024)).toFixed(2)} MB`);
+      updateField('plan_document_data', base64);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const updateField = (field: string, value: string | boolean | string[]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -212,7 +260,7 @@ export default function ProjectWizardForm() {
 
   if (success) {
     const whatsappText = encodeURIComponent(
-      `Hello KRAD Technology, I just submitted project requirements for "${formData.project_title}".\nName: ${formData.client_name}\nBudget: ${formData.estimated_budget}\nTimeline: ${formData.timeline}`
+      `Hello KRAD Technology, I just submitted project requirements for "${formData.project_title}".\nName: ${formData.client_name}\nBudget: ${formData.estimated_budget}\nTimeline: ${formData.timeline}${formData.plan_document_name ? `\nAttached Plan: ${formData.plan_document_name}` : ''}${formData.reference_url ? `\nSpec Link: ${formData.reference_url}` : ''}`
     );
 
     return (
@@ -500,7 +548,7 @@ export default function ProjectWizardForm() {
           </div>
         )}
 
-        {/* STEP 4: Budget & Timeline with Multi-Currency */}
+        {/* STEP 4: Budget & Timeline with Multi-Currency & Custom Budget Option */}
         {currentStep === 4 && (
           <div className="space-y-5 animate-in fade-in duration-200">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
@@ -529,21 +577,84 @@ export default function ProjectWizardForm() {
               </div>
             </div>
 
+            {/* Budget Mode Toggle: Preset vs Custom */}
+            <div className="flex items-center gap-2 p-1.5 rounded-xl bg-[#050814] border border-white/10 w-fit">
+              <button
+                type="button"
+                onClick={() => {
+                  setBudgetType('tier');
+                  updateField('budget_type', 'tier');
+                  updateField('estimated_budget', CURRENCY_BUDGETS[currency][1]);
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  budgetType === 'tier'
+                    ? 'bg-[#00D2FE] text-slate-950 font-bold shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Standard Tiers
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setBudgetType('custom');
+                  updateField('budget_type', 'custom');
+                  updateField('estimated_budget', customBudget ? `Custom: ${currency} ${customBudget}` : `Custom Target Budget (${currency})`);
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                  budgetType === 'custom'
+                    ? 'bg-[#00D2FE] text-slate-950 font-bold shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Sliders className="w-3 h-3" />
+                <span>Custom Target Budget (Decide Yourself)</span>
+              </button>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
-                  Estimated Budget ({currency})
-                </label>
-                <select
-                  value={formData.estimated_budget}
-                  onChange={(e) => updateField('estimated_budget', e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-white/10 focus:border-[#00D2FE] text-white text-xs outline-none transition-colors"
-                >
-                  {CURRENCY_BUDGETS[currency].map((b) => (
-                    <option key={b} value={b}>{b}</option>
-                  ))}
-                </select>
-              </div>
+              {budgetType === 'tier' ? (
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">
+                    Select Budget Bracket ({currency})
+                  </label>
+                  <select
+                    value={formData.estimated_budget}
+                    onChange={(e) => updateField('estimated_budget', e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-white/10 focus:border-[#00D2FE] text-white text-xs outline-none transition-colors"
+                  >
+                    {CURRENCY_BUDGETS[currency].map((b) => (
+                      <option key={b} value={b}>{b}</option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">
+                    Specify Your Target Proposed Budget ({currency})
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#00D2FE] font-mono text-xs font-bold">
+                      {currency === 'INR' ? '₹' : currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$'}
+                    </span>
+                    <input
+                      type="text"
+                      value={customBudget}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setCustomBudget(val);
+                        updateField('custom_budget_value', val);
+                        updateField('estimated_budget', `Custom: ${currency} ${val}`);
+                      }}
+                      placeholder={currency === 'INR' ? 'e.g. 3,50,000 or 15,00,000' : 'e.g. 12,000 or 45,000'}
+                      className="w-full pl-8 pr-3.5 py-2.5 rounded-xl bg-[#050814] border border-white/10 focus:border-[#00D2FE] text-white text-xs outline-none font-mono transition-colors"
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 block mt-1 font-mono">
+                    Our lead architect will tailor module milestones to align with your exact budget ceiling.
+                  </span>
+                </div>
+              )}
 
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1">Target Launch Timeline</label>
@@ -584,16 +695,90 @@ export default function ProjectWizardForm() {
         {/* STEP 5: Attachments & Confirmation */}
         {currentStep === 5 && (
           <div className="space-y-4 animate-in fade-in duration-200">
-            <h4 className="text-base font-bold text-white mb-2">Step 5: Scope Notes & Confirmation</h4>
+            <h4 className="text-base font-bold text-white mb-2">Step 5: Scope Document & Confirmation</h4>
+
+            {/* Document Upload Dropzone */}
             <div>
               <label className="block text-xs font-medium text-slate-300 mb-1">
-                Additional Notes or Reference Links (Figma, GitHub, Docs)
+                Upload Detailed Project Plan or Scope Document (Optional)
+              </label>
+              <div className="p-4 rounded-xl border border-dashed border-white/20 bg-[#050814] hover:border-[#00D2FE]/50 transition-colors">
+                {uploadedFile ? (
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                    <div className="flex items-center gap-2.5 text-left">
+                      <FileText className="w-5 h-5 text-[#00D2FE] shrink-0" />
+                      <div>
+                        <span className="text-xs font-semibold text-white block line-clamp-1">
+                          {uploadedFile.name}
+                        </span>
+                        <span className="text-[10px] text-emerald-400 font-mono">
+                          {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB • Ready for Secure Submission
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUploadedFile(null);
+                        updateField('plan_document_name', '');
+                        updateField('plan_document_size', '');
+                        updateField('plan_document_data', '');
+                      }}
+                      className="p-1.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
+                      title="Remove attached document"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <label className="cursor-pointer block text-center space-y-2 py-2">
+                    <input
+                      type="file"
+                      accept=".pdf,.docx,.doc,.txt,.zip,.png,.jpg"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                    <UploadCloud className="w-7 h-7 text-[#00D2FE] mx-auto opacity-80" />
+                    <span className="text-xs text-slate-300 block font-medium">
+                      Click to attach detailed project plan, SRS, or architecture diagram
+                    </span>
+                    <span className="text-[10px] text-slate-500 block font-mono">
+                      PDF, DOCX, ZIP, TXT or PNG (Max 15 MB)
+                    </span>
+                  </label>
+                )}
+              </div>
+            </div>
+
+            {/* Cloud Prototype Link */}
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1">
+                Figma Prototype, Notion Spec, or GitHub Link (Optional)
+              </label>
+              <div className="relative">
+                <Paperclip className="w-3.5 h-3.5 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="url"
+                  value={referenceUrl}
+                  onChange={(e) => {
+                    setReferenceUrl(e.target.value);
+                    updateField('reference_url', e.target.value);
+                  }}
+                  placeholder="https://figma.com/design/... or https://notion.so/..."
+                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-[#050814] border border-white/10 focus:border-[#00D2FE] text-white text-xs outline-none font-mono transition-colors"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1">
+                Additional Notes or Integration Requirements
               </label>
               <textarea
-                rows={3}
+                rows={2}
                 value={formData.scope_notes}
                 onChange={(e) => updateField('scope_notes', e.target.value)}
-                placeholder="Paste any links to specifications, wireframes, or reference systems..."
+                placeholder="Paste any additional notes, security requirements, or milestone constraints..."
                 className="w-full px-3.5 py-2.5 rounded-xl bg-[#050814] border border-white/10 focus:border-[#00D2FE] text-white text-xs outline-none transition-colors resize-none"
               />
             </div>
@@ -604,6 +789,12 @@ export default function ProjectWizardForm() {
               <div>• {formData.project_title} ({formData.service_category})</div>
               <div>• Budget: <strong className="text-[#00D2FE]">{formData.estimated_budget}</strong> | Timeline: {formData.timeline}</div>
               <div className="text-slate-400">• Platforms: {formData.target_platforms.join(', ')}</div>
+              {uploadedFile && (
+                <div className="text-emerald-400 font-mono">• Document Attached: {uploadedFile.name}</div>
+              )}
+              {referenceUrl && (
+                <div className="text-[#38BDF8] font-mono line-clamp-1">• Spec Link: {referenceUrl}</div>
+              )}
             </div>
 
             <div className="pt-2">

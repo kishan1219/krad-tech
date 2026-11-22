@@ -370,9 +370,9 @@ export default {
     }
 
     // -------------------------------------------------------------
-    // 6. Resilient Lead Submission Handlers: /api/project, /api/contact, /api/hire
+    // 6. Resilient Lead Submission Handlers: /api/project, /api/contact, /api/hire, /api/partner
     // -------------------------------------------------------------
-    if (url.pathname === '/api/project' || url.pathname === '/api/contact' || url.pathname === '/api/hire') {
+    if (url.pathname === '/api/project' || url.pathname === '/api/contact' || url.pathname === '/api/hire' || url.pathname === '/api/partner') {
       if (request.method === 'POST') {
         try {
           // If a custom external backend is explicitly set and reachable, try it first

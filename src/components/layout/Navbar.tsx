@@ -96,6 +96,7 @@ export default function Navbar() {
     { name: t.nav.home, href: '/' },
     { name: t.nav.caseStudies, href: '/case-studies' },
     { name: t.nav.about, href: '/about' },
+    { name: 'Partnerships', href: '/partnerships' },
     { name: t.nav.hireResource, href: '/hire-resource' },
     { name: t.nav.contact, href: '/contact' },
   ];
