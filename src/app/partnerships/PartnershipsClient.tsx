@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import SpotlightCard from '@/components/ui/SpotlightCard';
 import { COMPANY_DEFAULTS } from '@/lib/constants';
+import { trackClarityEvent, segmentUserJourney } from '@/lib/clarity';
 
 export default function PartnershipsClient() {
   const [copiedBadge, setCopiedBadge] = useState(false);
@@ -63,6 +64,10 @@ export default function PartnershipsClient() {
   const handleCopyBadge = () => {
     navigator.clipboard.writeText(getEmbedCode());
     setCopiedBadge(true);
+    trackClarityEvent('badge_snippet_copied', {
+      badge_tier: activeBadgeTier,
+      verification_id: badgeVerificationId,
+    });
     setTimeout(() => setCopiedBadge(false), 2500);
   };
 
@@ -75,6 +80,20 @@ export default function PartnershipsClient() {
 
     setSubmitting(true);
     setSubmitError('');
+
+    // Custom Telemetry Event & Funnel Segmentation for Clarity
+    trackClarityEvent('partnership_moa_request', {
+      company_name: formState.company_name,
+      country: formState.country,
+      partnership_tier: formState.partnership_tier,
+      annual_volume: formState.annual_volume,
+    });
+
+    segmentUserJourney({
+      country: formState.country,
+      intent: 'Partnership MOA',
+      track: formState.partnership_tier,
+    });
 
     try {
       const payload = {

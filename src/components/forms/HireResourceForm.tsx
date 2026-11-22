@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { RESOURCE_ROLES, ENGAGEMENT_MODELS } from '@/lib/constants';
 import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
+import { trackClarityEvent, segmentUserJourney } from '@/lib/clarity';
 
 export default function HireResourceForm() {
   const { t } = useLanguage();
@@ -51,6 +52,16 @@ export default function HireResourceForm() {
 
     setLoading(true);
     setErrorMsg('');
+
+    trackClarityEvent('hire_resource_submission', {
+      role: formData.role,
+      seniority: formData.seniority,
+      num_resources: formData.num_resources,
+      engagement_type: formData.engagement_type,
+    });
+    segmentUserJourney({
+      intent: `Hire ${formData.role}`,
+    });
 
     try {
       const res = await fetch('/api/hire', {

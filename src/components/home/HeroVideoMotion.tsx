@@ -51,6 +51,13 @@ export default function HeroVideoMotion() {
     };
     window.addEventListener('resize', handleResize);
 
+    const mousePos = { x: -1000, y: -1000, radius: 140 };
+    const handleMouseMove = (e: MouseEvent) => {
+      mousePos.x = e.clientX;
+      mousePos.y = e.clientY;
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
     const particles: Array<{
       x: number;
       y: number;
@@ -85,6 +92,17 @@ export default function HeroVideoMotion() {
         if (isPlaying) {
           p.x += p.vx;
           p.y += p.vy;
+
+          // Interactive subtle mouse repulsion
+          const mdx = p.x - mousePos.x;
+          const mdy = p.y - mousePos.y;
+          const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mdist < mousePos.radius && mdist > 0) {
+            const angle = Math.atan2(mdy, mdx);
+            const force = (mousePos.radius - mdist) / mousePos.radius;
+            p.x += Math.cos(angle) * force * 1.8;
+            p.y += Math.sin(angle) * force * 1.8;
+          }
 
           if (p.x < 0) p.x = width;
           if (p.x > width) p.x = 0;
@@ -126,6 +144,7 @@ export default function HeroVideoMotion() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [isPlaying]);
 

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { SERVICE_CATEGORIES } from '@/lib/constants';
 import { CheckCircle2, Loader2, Send, AlertCircle } from 'lucide-react';
+import { trackClarityEvent, segmentUserJourney } from '@/lib/clarity';
 
 export default function ContactForm() {
   const { t } = useLanguage();
@@ -35,6 +36,14 @@ export default function ContactForm() {
 
     setLoading(true);
     setErrorMsg('');
+
+    trackClarityEvent('contact_submission', {
+      service: formData.service,
+      subject: formData.subject,
+    });
+    segmentUserJourney({
+      intent: formData.service,
+    });
 
     try {
       const res = await fetch('/api/contact', {

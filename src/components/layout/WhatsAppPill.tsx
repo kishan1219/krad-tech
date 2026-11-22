@@ -3,6 +3,7 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
 import { COMPANY_DEFAULTS } from '@/lib/constants';
+import { trackClarityEvent } from '@/lib/clarity';
 
 export default function WhatsAppPill() {
   return (
@@ -11,6 +12,7 @@ export default function WhatsAppPill() {
         href={COMPANY_DEFAULTS.whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackClarityEvent('whatsapp_pill_clicked', { channel: 'floating_pill' })}
         aria-label="Direct WhatsApp Contact with KRAD Technology"
         className="group flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#0B1120]/90 hover:bg-[#0E162A] text-white border border-white/10 hover:border-[#25D366]/60 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 hover:scale-105"
       >

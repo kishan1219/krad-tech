@@ -4,6 +4,7 @@ import { LanguageProvider } from '@/context/LanguageContext';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import WhatsAppPill from '@/components/layout/WhatsAppPill';
+import ClarityWebVitals from '@/components/analytics/ClarityWebVitals';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://krad-tech.onrender.com';
 
@@ -130,6 +131,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-[#050814] text-slate-100 flex flex-col font-sans selection:bg-[#00D2FE]/20 selection:text-[#00D2FE]">
+        <ClarityWebVitals />
         <LanguageProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

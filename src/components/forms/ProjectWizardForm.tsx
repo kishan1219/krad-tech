@@ -16,6 +16,7 @@ import {
   Paperclip,
   Sliders 
 } from 'lucide-react';
+import { trackClarityEvent, setClarityDimension, segmentUserJourney } from '@/lib/clarity';
 
 export default function ProjectWizardForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -115,6 +116,10 @@ export default function ProjectWizardForm() {
       updateField('plan_document_name', file.name);
       updateField('plan_document_size', `${(file.size / (1024 * 1024)).toFixed(2)} MB`);
       updateField('plan_document_data', base64);
+      trackClarityEvent('wizard_document_uploaded', {
+        file_name: file.name,
+        size_bytes: file.size,
+      });
     };
     reader.readAsDataURL(file);
   };
@@ -152,6 +157,8 @@ export default function ProjectWizardForm() {
       ...prev,
       estimated_budget: CURRENCY_BUDGETS[newCurr][1], // default to second tier
     }));
+    setClarityDimension('selected_currency', newCurr);
+    segmentUserJourney({ currency: newCurr });
   };
 
   const togglePlatform = (platform: string) => {
@@ -209,6 +216,11 @@ export default function ProjectWizardForm() {
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
+      trackClarityEvent(`wizard_step_${currentStep}_complete`, {
+        completed_step: currentStep,
+        next_step: currentStep + 1,
+        category: formData.service_category,
+      });
       setCurrentStep((prev) => Math.min(prev + 1, 5));
     }
   };
@@ -224,6 +236,26 @@ export default function ProjectWizardForm() {
 
     setLoading(true);
     setErrorMsg('');
+
+    // Segment User Journey and Dispatch Clarity Funnel Conversion Event
+    segmentUserJourney({
+      country: formData.country,
+      currency,
+      intent: formData.service_category,
+      budget: formData.budget_type === 'custom' ? `Custom: ${formData.custom_budget_value}` : formData.estimated_budget,
+      priority: formData.priority,
+    });
+
+    trackClarityEvent('wizard_submission', {
+      project_title: formData.project_title,
+      service_category: formData.service_category,
+      budget: formData.budget_type === 'custom' ? `Custom: ${formData.custom_budget_value}` : formData.estimated_budget,
+      timeline: formData.timeline,
+      priority: formData.priority,
+      country: formData.country,
+      has_attachment: !!formData.plan_document_name,
+      has_reference_url: !!formData.reference_url,
+    });
 
     try {
       const res = await fetch('/api/project', {
