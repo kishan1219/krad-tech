@@ -113,6 +113,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        {/* Google tag (gtm.js) */}
+        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-W8J7X8BQ" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+            `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

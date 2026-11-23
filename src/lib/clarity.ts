@@ -12,12 +12,14 @@ declare global {
       command: 'event' | 'set' | 'identify' | 'consent',
       ...args: unknown[]
     ) => void;
+    dataLayer?: Array<Record<string, unknown> | unknown[]>;
+    gtag?: (...args: unknown[]) => void;
   }
 }
 
 /**
- * Tracks a custom business event in Microsoft Clarity for funnel segmentation.
- * Automatically mirrors metadata as scoped custom dimensions.
+ * Tracks a custom business event in Microsoft Clarity and Google Tag Manager (dataLayer).
+ * Automatically mirrors metadata as scoped custom dimensions and GTM event payload.
  */
 export function trackClarityEvent(
   eventName: string,
@@ -26,6 +28,15 @@ export function trackClarityEvent(
   if (typeof window === 'undefined') return;
 
   try {
+    // 1. Google Tag Manager / GTM DataLayer Push
+    if (Array.isArray(window.dataLayer)) {
+      window.dataLayer.push({
+        event: eventName,
+        ...(metadata || {}),
+      });
+    }
+
+    // 2. Microsoft Clarity Telemetry
     if (typeof window.clarity === 'function') {
       window.clarity('event', eventName);
 
@@ -40,7 +51,7 @@ export function trackClarityEvent(
   } catch (e) {
     // Safe non-blocking telemetry logging
     if (process.env.NODE_ENV !== 'production') {
-      console.debug('[Clarity Telemetry]', eventName, metadata, e);
+      console.debug('[Telemetry Error]', eventName, metadata, e);
     }
   }
 }
