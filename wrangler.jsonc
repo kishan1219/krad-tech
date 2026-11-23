@@ -10,7 +10,8 @@
     "command": "npm run build"
   },
   "assets": {
-    "directory": "dist"
+    "directory": "dist",
+    "binding": "ASSETS"
   },
   "pages_build_output_dir": "dist",
   "vars": {

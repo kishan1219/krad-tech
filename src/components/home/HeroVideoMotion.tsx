@@ -182,13 +182,14 @@ export default function HeroVideoMotion() {
         preload="none"
         poster="/brand/hero-video-loop.svg"
         onCanPlay={() => setVideoLoaded(true)}
+        onError={() => setVideoLoaded(false)}
         className={`w-full h-full object-cover transition-opacity duration-1000 ${
           videoLoaded && isPlaying ? 'opacity-30' : 'opacity-0'
         }`}
         aria-hidden="true"
       >
-        <source src="/brand/hero-loop.webm" type="video/webm; codecs=vp9" />
-        <source src="/brand/hero-loop.mp4" type="video/mp4; codecs=avc1" />
+        <source src="/brand/hero-loop.webm" type="video/webm" />
+        <source src="/brand/hero-loop.mp4" type="video/mp4" />
       </video>
 
       {/* 3. Hardware-accelerated Pointer-Reactive Canvas Particle Engine */}

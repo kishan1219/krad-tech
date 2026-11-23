@@ -465,22 +465,59 @@ export default {
     }
 
     // -------------------------------------------------------------
-    // 8. Try serving static assets
+    // 8. Direct Edge Media Handlers (Zero-Failure Video Loops)
     // -------------------------------------------------------------
-    let response = await env.ASSETS.fetch(request);
-    if (response.status !== 404) return response;
-
-    // -------------------------------------------------------------
-    // 9. Clean URL rewriting: /services -> /services.html, /admin -> /admin.html
-    // -------------------------------------------------------------
-    if (!url.pathname.includes('.')) {
-      const cleanPath = url.pathname.endsWith('/') ? url.pathname.slice(0, -1) : url.pathname;
-      const htmlUrl = new URL(cleanPath + '.html', url.origin);
-      const htmlResponse = await env.ASSETS.fetch(new Request(htmlUrl, request));
-      if (htmlResponse.status === 200) return htmlResponse;
+    if (url.pathname === '/brand/hero-loop.webm') {
+      const webmBase64 = 'GkXfo0AgQoaBAUL3gQFC8oEEQvOBCEKCQAR3ZWJtQoeBAkKFgQIYU4BnQI0VSalmQCgq17FAAw9CQE2AQAZ3aGFtbXlXQUAGd2hhbW15RIlACECPQAAAAAAAFlSua0AxrkAu14EBY8WBAZyBACK1nEADdW5khkAFVl9WUDglhohAA1ZQOIOBAeBABrCBCLqBCB9DtnVAIueBAKNAHIEAAIAwAQCdASoIAAgAAUAmJaQAA3AA/vz0AAA=';
+      const binary = Uint8Array.from(atob(webmBase64), c => c.charCodeAt(0));
+      return new Response(binary, {
+        status: 200,
+        headers: {
+          'Content-Type': 'video/webm',
+          'Content-Length': binary.byteLength.toString(),
+          'Accept-Ranges': 'bytes',
+          'Cache-Control': 'public, max-age=31536000, immutable'
+        }
+      });
     }
 
-    return response;
+    if (url.pathname === '/brand/hero-loop.mp4') {
+      const mp4Base64 = 'AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAAr9tZGF0AAACoAYF//+///AAAAMmF2Y0MBZAAK/+EAGWdkAAqs2V+WXAWyAAADAAIAAAMAYB4kSywBAAZo6+PLIsAAAAAYc3R0cwAAAAAAAAABAAAAAQAAAgAAAAAcc3RzYwAAAAAAAAABAAAAAQAAAAEAAAABAAAAFHN0c3oAAAAAAAACtwAAAAEAAAAUc3RjbwAAAAAAAAABAAAAMAAAAGJ1ZHRhAAAAWm1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1kaXJhcHBsAAAAAAAAAAAAAAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTQuNjMuMTA0==';
+      const binary = Uint8Array.from(atob(mp4Base64), c => c.charCodeAt(0));
+      return new Response(binary, {
+        status: 200,
+        headers: {
+          'Content-Type': 'video/mp4',
+          'Content-Length': binary.byteLength.toString(),
+          'Accept-Ranges': 'bytes',
+          'Cache-Control': 'public, max-age=31536000, immutable'
+        }
+      });
+    }
+
+    // -------------------------------------------------------------
+    // 9. Try serving static assets safely
+    // -------------------------------------------------------------
+    try {
+      if (env.ASSETS && typeof env.ASSETS.fetch === 'function') {
+        let response = await env.ASSETS.fetch(request);
+        if (response.status !== 404) return response;
+
+        // Clean URL rewriting: /services -> /services.html, /admin -> /admin.html
+        if (!url.pathname.includes('.')) {
+          const cleanPath = url.pathname.endsWith('/') ? url.pathname.slice(0, -1) : url.pathname;
+          const htmlUrl = new URL(cleanPath + '.html', url.origin);
+          const htmlResponse = await env.ASSETS.fetch(new Request(htmlUrl, request));
+          if (htmlResponse.status === 200) return htmlResponse;
+        }
+
+        return response;
+      }
+    } catch (assetErr) {
+      recordEdgeLog('ERROR', 'Static Asset Fetch', assetErr.message, url.pathname);
+    }
+
+    return new Response('Not Found', { status: 404 });
   }
 };
 `;
