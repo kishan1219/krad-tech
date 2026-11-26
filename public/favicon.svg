@@ -1,23 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
-  <defs>
-    <linearGradient id="iconGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00D2FE" />
-      <stop offset="100%" stop-color="#3B82F6" />
-    </linearGradient>
-    <filter id="iconBlur">
-      <feGaussianBlur stdDeviation="1.5" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-  </defs>
-  <!-- Dark background container with rounded corner -->
-  <rect width="64" height="64" rx="14" fill="#0A0F1D" stroke="#00D2FE" stroke-opacity="0.3" stroke-width="1.5" />
-  
-  <!-- Cybernetic Chevron / A-core geometry -->
-  <polygon points="32,12 50,48 41,48 32,28 23,48 14,48" fill="#F8FAFC" />
-  <!-- Neon cyan diamond core -->
-  <polygon points="32,26 40,42 32,38 24,42" fill="url(#iconGlow)" filter="url(#iconBlur)" />
-  <circle cx="32" cy="34" r="2.5" fill="#FFFFFF" />
-  <!-- Tech trace -->
-  <circle cx="50" cy="48" r="1.5" fill="#00D2FE" />
-  <circle cx="14" cy="48" r="1.5" fill="#00D2FE" />
+<svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="40" height="40" rx="10" fill="#05070E"/>
+  <path d="M9 8H14.5V32H9V8Z" fill="#F8FAFC"/>
+  <path d="M16.5 20L27.5 8H33L20.5 21.5L16.5 20Z" fill="#06B6D4"/>
+  <path d="M17.5 19.5L33 32H26.5L14.5 22L17.5 19.5Z" fill="#8B5CF6"/>
+  <circle cx="14.5" cy="20" r="2" fill="#06B6D4"/>
 </svg>

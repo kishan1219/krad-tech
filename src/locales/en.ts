@@ -95,7 +95,7 @@ export const en = {
     subtitle: 'Have a project in mind, need dedicated developers, or seeking technical consulting? Get in touch with our engineering team.',
     directCall: 'Direct Telephone Line',
     whatsappInstant: 'Instant WhatsApp Chat',
-    officialEmail: 'Configurable Business Email',
+    officialEmail: 'Direct Email',
     officeLocation: 'Corporate Headquarters',
     sendMessage: 'Send an Inquiry',
     namePlaceholder: 'Your Full Name',

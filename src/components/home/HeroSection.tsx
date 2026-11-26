@@ -67,7 +67,7 @@ export default function HeroSection() {
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <Link
                 href="/project-requirements"
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl text-sm font-bold text-slate-900 bg-gradient-to-r from-[#00D2FE] to-[#38BDF8] hover:from-[#38BDF8] hover:to-[#00D2FE] shadow-cyan-glow transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl text-sm font-bold text-slate-950 bg-[#06B6D4] hover:bg-[#22D3EE] shadow-cyan-glow transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>{t.hero.primaryCta}</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -75,7 +75,7 @@ export default function HeroSection() {
 
               <Link
                 href="/services"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-sm font-semibold text-slate-200 bg-surface-card hover:bg-surface-light border border-border-subtle hover:border-[#00D2FE]/40 transition-all duration-200"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-sm font-semibold text-slate-200 bg-[#0B101E] hover:bg-[#121A2E] border border-white/10 hover:border-[#06B6D4]/40 transition-all duration-200"
               >
                 <span>{t.hero.secondaryCta}</span>
               </Link>

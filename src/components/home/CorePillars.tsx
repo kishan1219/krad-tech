@@ -16,10 +16,10 @@ export default function CorePillars() {
   const { t } = useLanguage();
 
   return (
-    <section className="py-24 bg-[#050814] relative border-t border-white/10">
+    <section className="py-24 bg-[#05070E] relative border-t border-white/[0.08]">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-[#00D2FE]/5 rounded-full filter blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-[#3B82F6]/5 rounded-full filter blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-[#06B6D4]/5 rounded-full filter blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-[#6366F1]/5 rounded-full filter blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}

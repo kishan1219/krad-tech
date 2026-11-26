@@ -3,37 +3,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause } from 'lucide-react';
 
+/**
+ * Lightweight interactive hero motion backdrop.
+ * Uses a pointer-reactive canvas lattice + SVG mesh (no heavy raw MP4s)
+ * and automatically respects prefers-reduced-motion.
+ */
 export default function HeroVideoMotion() {
   const [isPlaying, setIsPlaying] = useState(true);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // Attempt lazy playback when viewport is visible
-    const video = videoRef.current;
-    if (!video) return;
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) {
+      setReducedMotion(true);
+      setIsPlaying(false);
+    }
+    const onChange = (e: MediaQueryListEvent) => {
+      setReducedMotion(e.matches);
+      setIsPlaying(!e.matches);
+    };
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && isPlaying) {
-            video.play().catch(() => {
-              // Non-blocking if autoplay policies require user interaction
-            });
-          } else {
-            video.pause();
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, [isPlaying]);
-
-  // Canvas cybernetic particle wave (runs when video is preloaded or idle)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -58,50 +52,34 @@ export default function HeroVideoMotion() {
     };
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    const particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      radius: number;
-      alpha: number;
-      color: string;
-    }> = [];
-
-    const colors = ['#00D2FE', '#38BDF8', '#818CF8', '#A78BFA'];
-    const particleCount = Math.min(Math.floor(width / 35), 45);
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        radius: Math.random() * 1.5 + 0.8,
-        alpha: Math.random() * 0.4 + 0.15,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      });
-    }
+    const colors = ['#06B6D4', '#22D3EE', '#6366F1', '#8B5CF6'];
+    const particleCount = Math.min(Math.floor(width / 38), 40);
+    const particles = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      radius: Math.random() * 1.5 + 0.8,
+      alpha: Math.random() * 0.4 + 0.15,
+      color: colors[Math.floor(Math.random() * colors.length)],
+    }));
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw faint cybernetic connection lattice
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-        if (isPlaying) {
+        if (isPlaying && !reducedMotion) {
           p.x += p.vx;
           p.y += p.vy;
 
-          // Interactive subtle mouse repulsion
           const mdx = p.x - mousePos.x;
           const mdy = p.y - mousePos.y;
           const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
           if (mdist < mousePos.radius && mdist > 0) {
-            const angle = Math.atan2(mdy, mdx);
             const force = (mousePos.radius - mdist) / mousePos.radius;
-            p.x += Math.cos(angle) * force * 1.8;
-            p.y += Math.sin(angle) * force * 1.8;
+            p.x += (mdx / mdist) * force * 1.6;
+            p.y += (mdy / mdist) * force * 1.6;
           }
 
           if (p.x < 0) p.x = width;
@@ -116,27 +94,26 @@ export default function HeroVideoMotion() {
         ctx.globalAlpha = p.alpha;
         ctx.fill();
 
-        // Connect nearby points
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dx = p.x - p2.x;
           const dy = p.y - p2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 140) {
+          if (dist < 130) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = '#00D2FE';
-            ctx.globalAlpha = (1 - dist / 140) * 0.12;
-            ctx.lineWidth = 0.75;
+            ctx.strokeStyle = p.color;
+            ctx.globalAlpha = (1 - dist / 130) * 0.12;
+            ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }
       }
 
-      ctx.globalAlpha = 1.0;
-      animId = requestAnimationFrame(render);
+      if (isPlaying && !reducedMotion) {
+        animId = requestAnimationFrame(render);
+      }
     };
 
     render();
@@ -146,85 +123,55 @@ export default function HeroVideoMotion() {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [isPlaying]);
-
-  const togglePlayback = () => {
-    const video = videoRef.current;
-    if (video) {
-      if (isPlaying) {
-        video.pause();
-      } else {
-        video.play().catch(() => {});
-      }
-    }
-    setIsPlaying(!isPlaying);
-  };
+  }, [isPlaying, reducedMotion]);
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
-      {/* 1. Ambient Vector Cybernetic Mesh Layer */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
+      {/* Lightweight SVG Cybernetic Mesh Layer */}
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-opacity duration-700"
         style={{
           backgroundImage: 'url(/brand/hero-video-loop.svg)',
-          opacity: isPlaying ? 0.45 : 0.2,
+          opacity: isPlaying ? 0.42 : 0.2,
         }}
         aria-hidden="true"
       />
 
-      {/* 2. Low-overhead HTML5 Video Background with Animated SVG Poster */}
-      <video
-        ref={videoRef}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="none"
-        poster="/brand/hero-video-loop.svg"
-        onCanPlay={() => setVideoLoaded(true)}
-        onError={() => setVideoLoaded(false)}
-        className={`w-full h-full object-cover transition-opacity duration-1000 ${
-          videoLoaded && isPlaying ? 'opacity-30' : 'opacity-0'
-        }`}
-        aria-hidden="true"
-      >
-        <source src="/brand/hero-loop.webm" type="video/webm" />
-        <source src="/brand/hero-loop.mp4" type="video/mp4" />
-      </video>
-
-      {/* 3. Hardware-accelerated Pointer-Reactive Canvas Particle Engine */}
+      {/* Pointer-Reactive Canvas Particle Engine */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ opacity: isPlaying ? 0.9 : 0.2 }}
+        style={{ opacity: isPlaying ? 0.85 : 0.25 }}
       />
 
-      {/* 3. Multi-layer Radial Contrast Masks */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050814]/70 via-[#050814]/85 to-[#050814] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,210,254,0.12),transparent_70%)] pointer-events-none" />
+      {/* Multi-layer Obsidian Contrast Masks */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#05070E]/70 via-[#05070E]/85 to-[#05070E] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(6,182,212,0.12),transparent_70%)] pointer-events-none" />
 
-      {/* 4. Interactive Motion Control Badge */}
-      <div className="absolute bottom-6 right-6 pointer-events-auto z-20">
-        <button
-          type="button"
-          onClick={togglePlayback}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0B1120]/80 hover:bg-[#0B1120] border border-white/10 hover:border-[#00D2FE]/40 text-[11px] font-mono text-slate-400 hover:text-white backdrop-blur-md transition-all shadow-lg"
-          title={isPlaying ? 'Pause Motion Engine' : 'Resume Motion Engine'}
-        >
-          {isPlaying ? (
-            <>
-              <Pause className="w-3 h-3 text-[#00D2FE]" />
-              <span>Motion: Active</span>
-            </>
-          ) : (
-            <>
-              <Play className="w-3 h-3 text-slate-400" />
-              <span>Motion: Paused</span>
-            </>
-          )}
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-1" />
-        </button>
-      </div>
+      {/* Motion Control Badge */}
+      {!reducedMotion && (
+        <div className="absolute bottom-6 right-6 pointer-events-auto z-20">
+          <button
+            type="button"
+            onClick={() => setIsPlaying((prev) => !prev)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0B101E]/85 hover:bg-[#121A2E] border border-white/10 hover:border-[#06B6D4]/40 text-[11px] font-mono text-slate-400 hover:text-white backdrop-blur-md transition-all shadow-lg"
+            title={isPlaying ? 'Pause Motion Engine' : 'Resume Motion Engine'}
+          >
+            {isPlaying ? (
+              <>
+                <Pause className="w-3 h-3 text-[#06B6D4]" />
+                <span>Motion: Active</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-3 h-3 text-slate-400" />
+                <span>Motion: Paused</span>
+              </>
+            )}
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 ml-1" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

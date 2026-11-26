@@ -1,8 +1,16 @@
 import { MetadataRoute } from 'next';
+import { SERVICE_CATEGORIES } from '@/lib/constants';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kradtechnology.com';
   const currentDate = new Date();
+
+  const serviceRoutes: MetadataRoute.Sitemap = SERVICE_CATEGORIES.map((service) => ({
+    url: `${baseUrl}/services/${service.id}`,
+    lastModified: currentDate,
+    changeFrequency: 'weekly',
+    priority: 0.85,
+  }));
 
   return [
     {
@@ -17,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    ...serviceRoutes,
     {
       url: `${baseUrl}/case-studies`,
       lastModified: currentDate,

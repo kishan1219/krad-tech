@@ -10,20 +10,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#050814",
+        background: "#05070E",
         surface: {
-          DEFAULT: "#0B1120",
-          light: "#111A2E",
-          card: "rgba(11, 17, 32, 0.8)",
-          glass: "rgba(10, 15, 29, 0.65)",
+          DEFAULT: "#0B101E",
+          light: "#121A2E",
+          card: "rgba(11, 16, 30, 0.85)",
+          glass: "rgba(11, 16, 30, 0.68)",
+          offwhite: "#F8FAFC",
         },
         brand: {
-          cyan: "#00D2FE",
-          cyanHover: "#38BDF8",
+          cyan: "#06B6D4",
+          cyanHover: "#22D3EE",
           blue: "#2563EB",
           indigo: "#6366F1",
           violet: "#8B5CF6",
-          darkNavy: "#050814",
+          darkNavy: "#05070E",
           slate: "#0F172A",
         },
         text: {
@@ -33,17 +34,20 @@ const config: Config = {
         },
         border: {
           subtle: "rgba(255, 255, 255, 0.08)",
-          cyanGlow: "rgba(0, 210, 254, 0.3)",
+          cyanGlow: "rgba(6, 182, 212, 0.35)",
+          violetGlow: "rgba(139, 92, 246, 0.35)",
         },
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-cyan-indigo": "linear-gradient(135deg, #00D2FE 0%, #6366F1 100%)",
-        "gradient-dark-glow": "radial-gradient(circle at 50% 0%, rgba(0, 210, 254, 0.12) 0%, transparent 65%)",
+        "gradient-cyan-indigo": "linear-gradient(135deg, #06B6D4 0%, #6366F1 100%)",
+        "gradient-creative": "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
+        "gradient-dark-glow": "radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.12) 0%, transparent 65%)",
       },
       boxShadow: {
-        "cyan-glow": "0 0 25px -5px rgba(0, 210, 254, 0.3)",
-        "cyan-lg": "0 0 50px -10px rgba(0, 210, 254, 0.35)",
+        "cyan-glow": "0 0 25px -5px rgba(6, 182, 212, 0.35)",
+        "cyan-lg": "0 0 50px -10px rgba(6, 182, 212, 0.4)",
+        "violet-glow": "0 0 25px -5px rgba(139, 92, 246, 0.35)",
         "card-glass": "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
       },
       animation: {
