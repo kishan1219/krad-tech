@@ -78,7 +78,7 @@ VALUES
   ('hero_subtext_en', 'hero', 'en', 'From intelligent AI solutions to powerful web and mobile applications, KRAD Technology helps businesses transform ideas into scalable digital products.'),
   ('contact_phone', 'contact', 'en', '+91 91110 21438'),
   ('whatsapp_number', 'contact', 'en', '919111021438'),
-  ('contact_email', 'contact', 'en', 'contact@kradtechnology.com')
+  ('contact_email', 'contact', 'en', 'info@kradtechnology.com')
 ON CONFLICT (id) DO NOTHING;
 
 -- Grant permissions for service role and anon

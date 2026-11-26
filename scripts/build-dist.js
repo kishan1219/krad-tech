@@ -499,15 +499,16 @@ export default {
     // 9. Try serving static assets safely
     // -------------------------------------------------------------
     try {
-      if (env.ASSETS && typeof env.ASSETS.fetch === 'function') {
-        let response = await env.ASSETS.fetch(request);
+      const assetsBinding = env.ASSETS || env.SITE_ASSETS;
+      if (assetsBinding && typeof assetsBinding.fetch === 'function') {
+        let response = await assetsBinding.fetch(request);
         if (response.status !== 404) return response;
 
         // Clean URL rewriting: /services -> /services.html, /admin -> /admin.html
         if (!url.pathname.includes('.')) {
           const cleanPath = url.pathname.endsWith('/') ? url.pathname.slice(0, -1) : url.pathname;
           const htmlUrl = new URL(cleanPath + '.html', url.origin);
-          const htmlResponse = await env.ASSETS.fetch(new Request(htmlUrl, request));
+          const htmlResponse = await assetsBinding.fetch(new Request(htmlUrl, request));
           if (htmlResponse.status === 200) return htmlResponse;
         }
 

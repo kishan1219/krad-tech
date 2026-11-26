@@ -92,7 +92,7 @@ export default function AdminPage() {
     hero_subtext: 'From intelligent AI solutions to powerful web and mobile applications, KRAD Technology helps businesses transform ideas into scalable digital products.',
     contact_phone: '+91 91110 21438',
     whatsapp_number: '919111021438',
-    contact_email: 'contact@kradtechnology.com',
+    contact_email: 'info@kradtechnology.com',
     stat_uptime: '99.98%',
     stat_delivered: '45+',
     stat_latency: 'Sub-40ms',

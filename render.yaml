@@ -21,7 +21,7 @@ services:
       - key: SITE_URL
         value: https://kradtechnology.com
       - key: NEXT_PUBLIC_CONTACT_EMAIL
-        value: contact@kradtechnology.com
+        value: info@kradtechnology.com
       - key: NEXT_PUBLIC_CONTACT_PHONE
         value: "+91 91110 21438"
       - key: NEXT_PUBLIC_WHATSAPP_NUMBER

@@ -66,8 +66,8 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-base font-bold text-white">5. Your Data Rights</h2>
             <p>
               You have the right to request access to, correction of, or deletion of any personal or corporate information we hold regarding your inquiry. To exercise these rights, please contact our data team at{' '}
-              <a href="mailto:contact@kradtechnology.com" className="text-[#00D2FE] underline">
-                contact@kradtechnology.com
+              <a href="mailto:info@kradtechnology.com" className="text-[#06B6D4] underline">
+                info@kradtechnology.com
               </a>.
             </p>
           </section>

@@ -61,7 +61,7 @@ export default function TermsPage() {
             <h2 className="text-base font-bold text-white">6. Governing Law & Inquiries</h2>
             <p>
               For commercial contracting inquiries, Master Services Agreements, or legal communications, contact our team at{' '}
-              <a href="mailto:contact@kradtechnology.com" className="text-[#00D2FE] underline">contact@kradtechnology.com</a> or telephone{' '}
+              <a href="mailto:info@kradtechnology.com" className="text-[#06B6D4] underline">info@kradtechnology.com</a> or telephone{' '}
               <a href="tel:+919111021438" className="text-[#00D2FE] font-mono">+91 91110 21438</a>.
             </p>
           </section>
