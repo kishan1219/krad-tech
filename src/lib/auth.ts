@@ -35,10 +35,10 @@ export function timingSafeCompare(a?: string | null, b?: string | null): boolean
  * Validates admin credentials against configured environment variables.
  */
 export function verifyAdminCredentials(user: string, pass: string): boolean {
-  const validUser = process.env.ADMIN_USER || 'admin';
+  const validUser = (process.env.ADMIN_USER || 'admin').trim();
   const validPass = process.env.ADMIN_PASS || 'krad2026!secure';
 
-  const userMatch = timingSafeCompare(user, validUser);
+  const userMatch = timingSafeCompare(user.trim(), validUser);
   const passMatch = timingSafeCompare(pass, validPass);
 
   return userMatch && passMatch;

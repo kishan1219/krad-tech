@@ -219,11 +219,14 @@ export default {
         }
 
         const body = await request.json();
-        const validUser = env.ADMIN_USER || 'admin';
-        const validPass = env.ADMIN_PASS || 'krad2026!secure';
-        const validSecret = env.ADMIN_SECRET_KEY || 'krad_admin_secure_key_2026';
+        const validUser = String(env.ADMIN_USER || 'admin').trim();
+        const validPass = String(env.ADMIN_PASS || 'krad2026!secure');
+        const validSecret = String(env.ADMIN_SECRET_KEY || 'krad_admin_secure_key_2026');
 
-        if (constantTimeEqual(String(body.username || ''), validUser) && constantTimeEqual(String(body.password || ''), validPass)) {
+        const userMatch = constantTimeEqual(String(body.username || '').trim(), validUser);
+        const passMatch = constantTimeEqual(String(body.password || ''), validPass);
+
+        if (userMatch && passMatch) {
           loginAttempts.delete(ip);
           const sessionToken = await createSessionToken(validUser, validSecret);
           const secureFlag = isHttps ? '; Secure' : '';
@@ -240,7 +243,7 @@ export default {
           });
         }
 
-        recordEdgeLog('WARN', 'Admin Auth', 'Failed login attempt for user: ' + (body.username || 'unknown'), url.pathname);
+        recordEdgeLog('WARN', 'Admin Auth', 'Failed login attempt (userMatch=' + userMatch + ', passMatch=' + passMatch + ', envConfigured=' + Boolean(env.ADMIN_USER && env.ADMIN_PASS) + ')', url.pathname);
         return new Response(JSON.stringify({ error: 'Invalid username or password' }), {
           status: 401,
           headers: { 'Content-Type': 'application/json' }
