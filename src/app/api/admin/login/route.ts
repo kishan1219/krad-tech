@@ -3,12 +3,20 @@ import { AdminLoginSchema } from '@/validators';
 import {
   ADMIN_SESSION_TTL_SECONDS,
   createAdminSessionToken,
+  isAdminAuthConfigured,
   verifyAdminCredentials,
 } from '@/lib/auth';
 import { checkRateLimit } from '@/lib/rate-limiter';
 
 export async function POST(req: NextRequest) {
   try {
+    if (!isAdminAuthConfigured()) {
+      return NextResponse.json(
+        { error: 'Admin authentication is not configured on this server.' },
+        { status: 503 }
+      );
+    }
+
     const ip =
       req.headers.get('cf-connecting-ip') ||
       req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
@@ -31,6 +39,12 @@ export async function POST(req: NextRequest) {
     }
 
     const sessionToken = createAdminSessionToken(username);
+    if (!sessionToken) {
+      return NextResponse.json(
+        { error: 'Admin session signing secret is not configured.' },
+        { status: 503 }
+      );
+    }
     const response = NextResponse.json({
       success: true,
       message: 'Authentication successful',

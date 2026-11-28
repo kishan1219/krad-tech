@@ -2,8 +2,9 @@ import crypto from 'crypto';
 
 export const ADMIN_SESSION_TTL_SECONDS = 60 * 60 * 8; // 8 hours
 
-function getSigningSecret(): string {
-  return process.env.ADMIN_SECRET_KEY || 'krad_admin_secure_key_2026';
+function getSigningSecret(): string | null {
+  const secret = process.env.ADMIN_SECRET_KEY?.trim();
+  return secret && secret.length > 0 ? secret : null;
 }
 
 function toBase64Url(input: Buffer | string): string {
@@ -32,11 +33,23 @@ export function timingSafeCompare(a?: string | null, b?: string | null): boolean
 }
 
 /**
- * Validates admin credentials against configured environment variables.
+ * Returns true only when ADMIN_USER, ADMIN_PASS, and ADMIN_SECRET_KEY are configured.
+ */
+export function isAdminAuthConfigured(): boolean {
+  return Boolean(
+    process.env.ADMIN_USER?.trim() &&
+      process.env.ADMIN_PASS &&
+      getSigningSecret()
+  );
+}
+
+/**
+ * Validates admin credentials strictly against configured environment variables (fail-closed).
  */
 export function verifyAdminCredentials(user: string, pass: string): boolean {
-  const validUser = (process.env.ADMIN_USER || 'admin').trim();
-  const validPass = process.env.ADMIN_PASS || 'krad2026!secure';
+  const validUser = process.env.ADMIN_USER?.trim();
+  const validPass = process.env.ADMIN_PASS;
+  if (!validUser || !validPass) return false;
 
   const userMatch = timingSafeCompare(user.trim(), validUser);
   const passMatch = timingSafeCompare(pass, validPass);
@@ -47,7 +60,10 @@ export function verifyAdminCredentials(user: string, pass: string): boolean {
 /**
  * Creates a signed, expiring HMAC-SHA256 session token (never exposes the raw secret).
  */
-export function createAdminSessionToken(username: string): string {
+export function createAdminSessionToken(username: string): string | null {
+  const secret = getSigningSecret();
+  if (!secret) return null;
+
   const nowSec = Math.floor(Date.now() / 1000);
   const payload = {
     sub: username,
@@ -58,7 +74,7 @@ export function createAdminSessionToken(username: string): string {
 
   const payloadB64 = toBase64Url(JSON.stringify(payload));
   const sig = crypto
-    .createHmac('sha256', getSigningSecret())
+    .createHmac('sha256', secret)
     .update(payloadB64)
     .digest();
 
@@ -69,7 +85,8 @@ export function createAdminSessionToken(username: string): string {
  * Verifies HMAC-SHA256 signature and strict expiration timestamp (`exp`).
  */
 export function verifyAdminToken(token?: string | null): boolean {
-  if (!token || typeof token !== 'string') return false;
+  const secret = getSigningSecret();
+  if (!secret || !token || typeof token !== 'string') return false;
   const parts = token.split('.');
   if (parts.length !== 2) return false;
 
@@ -77,7 +94,7 @@ export function verifyAdminToken(token?: string | null): boolean {
   if (!payloadB64 || !sigB64) return false;
 
   const expectedSig = toBase64Url(
-    crypto.createHmac('sha256', getSigningSecret()).update(payloadB64).digest()
+    crypto.createHmac('sha256', secret).update(payloadB64).digest()
   );
 
   if (!timingSafeCompare(sigB64, expectedSig)) {

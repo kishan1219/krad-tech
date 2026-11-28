@@ -181,7 +181,9 @@ async function verifySessionToken(token, secret) {
 }
 
 async function verifyAuth(request, env) {
-  const secret = env.ADMIN_SECRET_KEY || 'krad_admin_secure_key_2026';
+  const secret = env.ADMIN_SECRET_KEY ? String(env.ADMIN_SECRET_KEY).trim() : '';
+  if (!secret) return false;
+
   const cookie = request.headers.get('Cookie') || '';
   const tokenMatch = cookie.match(/krad_admin_token=([^;]+)/);
   const cookieToken = tokenMatch ? tokenMatch[1] : null;
@@ -218,11 +220,19 @@ export default {
           rec.count += 1;
         }
 
-        const body = await request.json();
-        const validUser = String(env.ADMIN_USER || 'admin').trim();
-        const validPass = String(env.ADMIN_PASS || 'krad2026!secure');
-        const validSecret = String(env.ADMIN_SECRET_KEY || 'krad_admin_secure_key_2026');
+        const validUser = env.ADMIN_USER ? String(env.ADMIN_USER).trim() : '';
+        const validPass = env.ADMIN_PASS ? String(env.ADMIN_PASS) : '';
+        const validSecret = env.ADMIN_SECRET_KEY ? String(env.ADMIN_SECRET_KEY).trim() : '';
 
+        if (!validUser || !validPass || !validSecret) {
+          recordEdgeLog('ERROR', 'Admin Auth', 'ADMIN_USER, ADMIN_PASS, or ADMIN_SECRET_KEY missing in Cloudflare environment', url.pathname);
+          return new Response(JSON.stringify({ error: 'Admin authentication is not configured in environment variables.' }), {
+            status: 503,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+
+        const body = await request.json();
         const userMatch = constantTimeEqual(String(body.username || '').trim(), validUser);
         const passMatch = constantTimeEqual(String(body.password || ''), validPass);
 
@@ -311,8 +321,8 @@ export default {
     // -------------------------------------------------------------
     if (url.pathname === '/api/admin/content') {
       if (request.method === 'GET') {
-        const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || env.SUPABASE_URL;
+        const supabaseKey = env.SUPABASE_SECRET_KEY || env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
         if (supabaseUrl && supabaseKey) {
           try {
