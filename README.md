@@ -54,7 +54,7 @@ npm run start
 ---
 
 ## Admin Portal
-Access the admin portal at `/admin` (Default: `admin` / `krad2026!secure`).
+Access the admin portal at `/admin`. Configure `ADMIN_USER`, `ADMIN_PASS`, and `ADMIN_SECRET_KEY` in your local `.env` (or deployment environment secrets) before signing in.
 
 ---
 
