@@ -107,14 +107,9 @@ export default function AdminPage() {
   const [logLevelFilter, setLogLevelFilter] = useState<'ALL' | 'ERROR' | 'WARN' | 'INFO'>('ALL');
   const [logSearch, setLogSearch] = useState('');
 
-  // Helper for auth headers
+  // Helper for auth headers (relies on HttpOnly cookie)
   const getAuthHeaders = (): HeadersInit => {
-    const token = typeof window !== 'undefined' ? sessionStorage.getItem('krad_admin_token') || localStorage.getItem('krad_admin_token') : null;
-    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-    return headers;
+    return { 'Content-Type': 'application/json' };
   };
 
   // 1. Fetch Leads

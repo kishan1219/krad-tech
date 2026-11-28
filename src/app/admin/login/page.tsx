@@ -17,9 +17,16 @@ export default function AdminLoginPage() {
     setErrorMsg('');
 
     try {
+      // Clear any legacy client-side tokens if present
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('krad_admin_token');
+        localStorage.removeItem('krad_admin_token');
+      }
+
       const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ username, password }),
       });
 
@@ -34,11 +41,6 @@ export default function AdminLoginPage() {
         throw new Error(data.error || 'Invalid username or password');
       }
 
-      if (data.token) {
-        sessionStorage.setItem('krad_admin_token', data.token);
-        localStorage.setItem('krad_admin_token', data.token);
-      }
-
       router.push('/admin');
       router.refresh();
     } catch (err: unknown) {
@@ -50,15 +52,15 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen pt-36 pb-24 bg-[#050814] flex items-center justify-center px-4">
-      <div className="w-full max-w-md p-8 sm:p-10 rounded-3xl bg-surface-card border border-border-subtle shadow-2xl space-y-6">
+    <div className="min-h-screen pt-36 pb-24 bg-[#05070E] flex items-center justify-center px-4">
+      <div className="w-full max-w-md p-8 sm:p-10 rounded-3xl bg-[#0B101E] border border-white/10 shadow-2xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-[#0B1120] border border-[#00D2FE]/40 mx-auto flex items-center justify-center text-[#00D2FE] shadow-cyan-glow">
+          <div className="w-12 h-12 rounded-2xl bg-[#05070E] border border-[#06B6D4]/40 mx-auto flex items-center justify-center text-[#06B6D4] shadow-cyan-glow">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">KRAD Admin Portal</h1>
           <p className="text-xs text-slate-400">
-            Sign in to manage incoming leads and live website content.
+            Authorized personnel only. Sessions expire automatically after 8 hours.
           </p>
         </div>
 
@@ -77,10 +79,11 @@ export default function AdminLoginPage() {
               <input
                 type="text"
                 required
+                autoComplete="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="admin"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none transition-colors"
+                placeholder="Enter admin username"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#05070E] border border-white/10 focus:border-[#06B6D4] text-white text-xs outline-none transition-colors"
               />
             </div>
           </div>
@@ -92,10 +95,11 @@ export default function AdminLoginPage() {
               <input
                 type="password"
                 required
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#050814] border border-border-subtle focus:border-[#00D2FE] text-white text-xs outline-none transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#05070E] border border-white/10 focus:border-[#06B6D4] text-white text-xs outline-none transition-colors"
               />
             </div>
           </div>
@@ -103,7 +107,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl text-xs font-semibold text-slate-900 bg-[#00D2FE] hover:bg-[#38BDF8] shadow-cyan-glow flex items-center justify-center gap-2 transition-all disabled:opacity-50 mt-2"
+            className="w-full py-3 rounded-xl text-xs font-bold text-slate-950 bg-[#06B6D4] hover:bg-[#22D3EE] shadow-cyan-glow flex items-center justify-center gap-2 transition-all disabled:opacity-50 mt-2"
           >
             {loading ? (
               <>
@@ -115,10 +119,6 @@ export default function AdminLoginPage() {
             )}
           </button>
         </form>
-
-        <div className="p-3 rounded-xl bg-[#050814] border border-border-subtle text-[11px] text-slate-500 text-center font-mono">
-          Default Admin User: <span className="text-slate-300">admin</span> • Pass: <span className="text-slate-300">krad2026!secure</span>
-        </div>
       </div>
     </div>
   );

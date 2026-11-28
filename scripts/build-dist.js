@@ -111,42 +111,131 @@ function recordEdgeLog(level, source, message, path, details) {
   if (edgeLogs.length > 200) edgeLogs.pop();
 }
 
-function verifyAuth(request, env) {
+const ADMIN_SESSION_TTL_SECONDS = 28800; // 8 hours
+const loginAttempts = new Map();
+
+function toB64Url(bytes) {
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary).replace(/\\+/g, '-').replace(/\\//g, '_').replace(/=+$/, '');
+}
+
+function fromB64Url(str) {
+  const padded = str.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((str.length + 3) % 4);
+  return atob(padded);
+}
+
+async function hmacSign(secret, data) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    enc.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(data));
+  return toB64Url(new Uint8Array(sig));
+}
+
+function constantTimeEqual(a, b) {
+  if (!a || !b || a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+async function createSessionToken(username, secret) {
+  const nowSec = Math.floor(Date.now() / 1000);
+  const payload = JSON.stringify({
+    sub: username,
+    iat: nowSec,
+    exp: nowSec + ADMIN_SESSION_TTL_SECONDS,
+    jti: crypto.randomUUID()
+  });
+  const enc = new TextEncoder();
+  const payloadB64 = toB64Url(enc.encode(payload));
+  const sigB64 = await hmacSign(secret, payloadB64);
+  return payloadB64 + '.' + sigB64;
+}
+
+async function verifySessionToken(token, secret) {
+  if (!token || typeof token !== 'string') return false;
+  const parts = token.split('.');
+  if (parts.length !== 2) return false;
+  const [payloadB64, sigB64] = parts;
+  if (!payloadB64 || !sigB64) return false;
+
+  const expectedSig = await hmacSign(secret, payloadB64);
+  if (!constantTimeEqual(sigB64, expectedSig)) return false;
+
+  try {
+    const payload = JSON.parse(fromB64Url(payloadB64));
+    const nowSec = Math.floor(Date.now() / 1000);
+    return typeof payload.exp === 'number' && payload.exp > nowSec && typeof payload.sub === 'string' && payload.sub.length > 0;
+  } catch {
+    return false;
+  }
+}
+
+async function verifyAuth(request, env) {
   const secret = env.ADMIN_SECRET_KEY || 'krad_admin_secure_key_2026';
   const cookie = request.headers.get('Cookie') || '';
   const tokenMatch = cookie.match(/krad_admin_token=([^;]+)/);
   const cookieToken = tokenMatch ? tokenMatch[1] : null;
   const authHeader = request.headers.get('Authorization') || '';
-  const bearerToken = authHeader.replace(/^Bearer\\s+/i, '');
+  const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : null;
 
-  return (cookieToken && cookieToken === secret) || (bearerToken && bearerToken === secret);
+  if (cookieToken && (await verifySessionToken(cookieToken, secret))) return true;
+  if (bearerToken && (await verifySessionToken(bearerToken, secret))) return true;
+  return false;
 }
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const isHttps = url.protocol === 'https:';
 
     // -------------------------------------------------------------
     // 1. Admin Authentication: POST /api/admin/login
     // -------------------------------------------------------------
     if (url.pathname === '/api/admin/login' && request.method === 'POST') {
       try {
+        const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+        const now = Date.now();
+        const rec = loginAttempts.get(ip);
+        if (rec && now - rec.start < 900000 && rec.count >= 5) {
+          return new Response(JSON.stringify({ error: 'Too many login attempts. Please wait 15 minutes.' }), {
+            status: 429,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+        if (!rec || now - rec.start >= 900000) {
+          loginAttempts.set(ip, { count: 1, start: now });
+        } else {
+          rec.count += 1;
+        }
+
         const body = await request.json();
         const validUser = env.ADMIN_USER || 'admin';
         const validPass = env.ADMIN_PASS || 'krad2026!secure';
         const validSecret = env.ADMIN_SECRET_KEY || 'krad_admin_secure_key_2026';
 
-        if ((body.username === validUser && body.password === validPass) || body.password === validSecret) {
+        if (constantTimeEqual(String(body.username || ''), validUser) && constantTimeEqual(String(body.password || ''), validPass)) {
+          loginAttempts.delete(ip);
+          const sessionToken = await createSessionToken(validUser, validSecret);
+          const secureFlag = isHttps ? '; Secure' : '';
           return new Response(JSON.stringify({
             success: true,
             message: 'Authentication successful',
-            token: validSecret
+            expiresIn: ADMIN_SESSION_TTL_SECONDS
           }), {
             status: 200,
             headers: {
               'Content-Type': 'application/json',
-              'Set-Cookie': 'krad_admin_token=' + validSecret + '; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800',
-              'Access-Control-Allow-Origin': '*'
+              'Set-Cookie': 'krad_admin_token=' + sessionToken + '; Path=/; HttpOnly; SameSite=Strict; Max-Age=' + ADMIN_SESSION_TTL_SECONDS + secureFlag
             }
           });
         }
@@ -168,11 +257,12 @@ export default {
     // 2. Admin Logout: POST /api/admin/logout
     // -------------------------------------------------------------
     if (url.pathname === '/api/admin/logout') {
+      const secureFlag = isHttps ? '; Secure' : '';
       return new Response(JSON.stringify({ success: true, message: 'Logged out successfully' }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Set-Cookie': 'krad_admin_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+          'Set-Cookie': 'krad_admin_token=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0' + secureFlag
         }
       });
     }
@@ -194,7 +284,7 @@ export default {
         }
       }
 
-      if (!verifyAuth(request, env)) {
+      if (!(await verifyAuth(request, env))) {
         return new Response(JSON.stringify({ error: 'Unauthorized access' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
       }
 
@@ -252,7 +342,7 @@ export default {
       }
 
       if (request.method === 'POST') {
-        if (!verifyAuth(request, env)) {
+        if (!(await verifyAuth(request, env))) {
           return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
         }
 
@@ -288,7 +378,7 @@ export default {
     // 5. Admin Leads (Client Requests): /api/admin/leads
     // -------------------------------------------------------------
     if (url.pathname === '/api/admin/leads') {
-      if (!verifyAuth(request, env)) {
+      if (!(await verifyAuth(request, env))) {
         return new Response(JSON.stringify({ error: 'Unauthorized access' }), {
           status: 401,
           headers: { 'Content-Type': 'application/json' }
