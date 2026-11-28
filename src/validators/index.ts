@@ -62,8 +62,8 @@ export const ProjectRequirementSchema = z.object({
 });
 
 export const AdminLoginSchema = z.object({
-  username: z.string().min(3, 'Username required'),
-  password: z.string().min(6, 'Password required'),
+  username: z.string().trim().min(3, 'Username required').max(128, 'Username too long'),
+  password: z.string().min(6, 'Password required').max(128, 'Password too long'),
 });
 
 export const ContentOverrideSchema = z.object({

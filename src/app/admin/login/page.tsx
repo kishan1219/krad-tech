@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ShieldCheck, Lock, User, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
@@ -11,6 +11,21 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Redirect to dashboard immediately if already authenticated
+  useEffect(() => {
+    let active = true;
+    fetch('/api/admin/leads?type=stats', { credentials: 'same-origin' })
+      .then((res) => {
+        if (active && res.ok) {
+          router.replace('/admin');
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +57,7 @@ export default function AdminLoginPage() {
         throw new Error(data.error || 'Invalid username or password');
       }
 
-      router.push('/admin');
+      router.replace('/admin');
       router.refresh();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Login failed. Please verify credentials.';

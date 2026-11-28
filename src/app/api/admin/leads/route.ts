@@ -37,12 +37,15 @@ export async function GET(req: NextRequest) {
       getLeadStats(),
     ]);
 
-    return NextResponse.json({
-      contacts,
-      hires,
-      projects,
-      stats,
-    });
+    return NextResponse.json(
+      {
+        contacts,
+        hires,
+        projects,
+        stats,
+      },
+      { headers: { 'Cache-Control': 'no-store' } }
+    );
   } catch (err: unknown) {
     console.error('Leads GET error:', err);
     return NextResponse.json({ error: 'Failed to retrieve leads' }, { status: 500 });

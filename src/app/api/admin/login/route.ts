@@ -45,11 +45,14 @@ export async function POST(req: NextRequest) {
         { status: 503 }
       );
     }
-    const response = NextResponse.json({
-      success: true,
-      message: 'Authentication successful',
-      expiresIn: ADMIN_SESSION_TTL_SECONDS,
-    });
+    const response = NextResponse.json(
+      {
+        success: true,
+        message: 'Authentication successful',
+        expiresIn: ADMIN_SESSION_TTL_SECONDS,
+      },
+      { headers: { 'Cache-Control': 'no-store' } }
+    );
 
     response.cookies.set('krad_admin_token', sessionToken, {
       httpOnly: true,

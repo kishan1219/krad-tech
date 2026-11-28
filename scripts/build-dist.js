@@ -284,21 +284,31 @@ export default {
     // 3. Admin Error Logs: /api/admin/logs
     // -------------------------------------------------------------
     if (url.pathname === '/api/admin/logs') {
+      if (!(await verifyAuth(request, env))) {
+        return new Response(JSON.stringify({ error: 'Unauthorized access' }), {
+          status: 401,
+          headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+        });
+      }
+
       if (request.method === 'POST') {
         try {
           const body = await request.json();
-          recordEdgeLog(body.level, body.source, body.message, body.path, body.details);
+          const level = body.level === 'WARN' || body.level === 'INFO' ? body.level : 'ERROR';
+          recordEdgeLog(
+            level,
+            String(body.source || 'Client Runtime').slice(0, 100),
+            String(body.message || 'Unknown error occurred').slice(0, 500),
+            String(body.path || url.pathname).slice(0, 200),
+            body.details
+          );
           return new Response(JSON.stringify({ success: true }), {
             status: 200,
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
           });
         } catch {
           return new Response(JSON.stringify({ error: 'Failed to record log' }), { status: 400 });
         }
-      }
-
-      if (!(await verifyAuth(request, env))) {
-        return new Response(JSON.stringify({ error: 'Unauthorized access' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
       }
 
       if (request.method === 'DELETE') {
@@ -306,13 +316,13 @@ export default {
         recordEdgeLog('INFO', 'Admin Action', 'Logs cleared by administrator.', url.pathname);
         return new Response(JSON.stringify({ success: true, message: 'Logs cleared' }), {
           status: 200,
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
         });
       }
 
       return new Response(JSON.stringify({ success: true, total: edgeLogs.length, logs: edgeLogs }), {
         status: 200,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
       });
     }
 
@@ -599,8 +609,36 @@ export default {
     }
 
     // -------------------------------------------------------------
-    // 9. Try serving static assets safely
+    // 9. Edge Admin Route Guard & Static Assets
     // -------------------------------------------------------------
+    const normalizedPath = url.pathname.endsWith('/') && url.pathname.length > 1
+      ? url.pathname.slice(0, -1)
+      : url.pathname;
+
+    if (normalizedPath === '/admin' || normalizedPath === '/admin/content') {
+      if (!(await verifyAuth(request, env))) {
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: new URL('/admin/login', url.origin).toString(),
+            'Cache-Control': 'no-store'
+          }
+        });
+      }
+    }
+
+    if (normalizedPath === '/admin/login') {
+      if (await verifyAuth(request, env)) {
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: new URL('/admin', url.origin).toString(),
+            'Cache-Control': 'no-store'
+          }
+        });
+      }
+    }
+
     try {
       const assetsBinding = env.ASSETS || env.SITE_ASSETS;
       if (assetsBinding && typeof assetsBinding.fetch === 'function') {

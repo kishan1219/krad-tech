@@ -72,11 +72,10 @@ export async function GET(req: NextRequest) {
 
   try {
     const logs = readLogs();
-    return NextResponse.json({
-      success: true,
-      total: logs.length,
-      logs,
-    });
+    return NextResponse.json(
+      { success: true, total: logs.length, logs },
+      { headers: { 'Cache-Control': 'no-store' } }
+    );
   } catch (err) {
     console.error('Error fetching logs:', err);
     return NextResponse.json({ error: 'Failed to retrieve logs' }, { status: 500 });
@@ -84,21 +83,29 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (!isAuthorized(req)) {
+    return NextResponse.json({ error: 'Unauthorized access' }, { status: 401 });
+  }
+
   try {
     const body = await req.json();
+    const level = body.level === 'WARN' || body.level === 'INFO' ? body.level : 'ERROR';
     const entry: SystemLogEntry = {
       id: 'log_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
       timestamp: new Date().toISOString(),
-      level: body.level || 'ERROR',
-      source: body.source || 'Client Runtime',
-      message: body.message || 'Unknown error occurred',
+      level,
+      source: String(body.source || 'Client Runtime').slice(0, 100),
+      message: String(body.message || 'Unknown error occurred').slice(0, 500),
       details: body.details,
-      path: body.path || req.nextUrl.pathname,
+      path: String(body.path || req.nextUrl.pathname).slice(0, 200),
       ip: req.headers.get('cf-connecting-ip') || req.headers.get('x-forwarded-for') || '127.0.0.1',
     };
 
     writeLog(entry);
-    return NextResponse.json({ success: true, logId: entry.id });
+    return NextResponse.json(
+      { success: true, logId: entry.id },
+      { headers: { 'Cache-Control': 'no-store' } }
+    );
   } catch {
     return NextResponse.json({ error: 'Failed to record log' }, { status: 400 });
   }
